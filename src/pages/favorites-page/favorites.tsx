@@ -1,19 +1,17 @@
+import { Helmet } from 'react-helmet-async';
+import Logo from '../../components/logo/logo';
+
 function Favorites(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
+        <Helmet>
+          <title>6 cities. Favorites</title>
+        </Helmet>
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width={81}
-                  height={41}
-                />
-              </a>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">

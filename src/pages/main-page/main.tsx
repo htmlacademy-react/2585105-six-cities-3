@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet-async';
+import Logo from '../../components/logo/logo';
 import PlaceCard from '../../components/place-card/place-card';
 
 type PlacesProps = {
@@ -8,18 +10,13 @@ function MainScreen({ placesCount }: PlacesProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
+        <Helmet>
+          <title>6 cities</title>
+        </Helmet>
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width={81}
-                  height={41}
-                />
-              </a>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -129,4 +126,3 @@ function MainScreen({ placesCount }: PlacesProps): JSX.Element {
 }
 
 export default MainScreen;
-
