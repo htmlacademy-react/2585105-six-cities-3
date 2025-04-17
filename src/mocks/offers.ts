@@ -17,7 +17,7 @@ const offers: OfferType[] = [
       'Kitchen'
     ],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'markup/img/avatar-angelina.jpg',
       id: 3,
       isPro: true,
       name: 'Angelina'
@@ -55,7 +55,7 @@ const offers: OfferType[] = [
       'Kitchen'
     ],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'markup/img/avatar-angelina.jpg',
       id: 1,
       isPro: true,
       name: 'Igor'
@@ -95,7 +95,7 @@ const offers: OfferType[] = [
       'Cabel TV'
     ],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'markup/img/avatar-angelina.jpg',
       id: 2,
       isPro: false,
       name: 'Natasha'
@@ -133,7 +133,7 @@ const offers: OfferType[] = [
       'Kitchen'
     ],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'markup/img/avatar-max.jpg',
       id: 1,
       isPro: true,
       name: 'Igor'
@@ -175,7 +175,7 @@ const offers: OfferType[] = [
       'Towels'
     ],
     host: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'markup/img/avatar-max.jpg',
       id: 4,
       isPro: false,
       name: 'Sasha'

@@ -1,5 +1,5 @@
 import { AppRoute, AuthorizationStatus } from '../../const';
-import Favorites from '../../pages/favorites-page/favorites';
+import FavoritesPage from '../../pages/favorites-page/favorites';
 import Login from '../../pages/login-page/login';
 import MainScreen from '../../pages/main-page/main';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
@@ -21,6 +21,8 @@ type AppPlacesCards = {
 
 function App({ offers, review }: AppPlacesCards): JSX.Element {
   const [...offersAll] = offers;
+  const [...reviewAll] = review;
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -33,7 +35,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authStatus}>
-                <Favorites />
+                <FavoritesPage propsOffers={offersAll} />
               </PrivateRoute>
             }
           />
@@ -43,7 +45,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={offersAll} propsReview={review} />}
+            element={<Offer propsOffers={offersAll} propsReview={reviewAll} />}
           />
           <Route
             path='*'

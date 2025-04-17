@@ -5,4 +5,10 @@ const calculateRating = (rating: number, stars: number = RATING_STARS) => window
 
 const formatDateComment = (date: string) => dayjs(date).format('MMMM YYYY');
 
-export { calculateRating, formatDateComment };
+function sortDay(firstReview: string, secondReview: string) {
+  const firstPointDate = dayjs(firstReview);
+  const secondPointDate = dayjs(secondReview);
+  return firstPointDate.valueOf() - secondPointDate.valueOf();
+}
+
+export { calculateRating, formatDateComment, sortDay };
