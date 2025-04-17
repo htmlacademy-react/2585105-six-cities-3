@@ -9,7 +9,7 @@ const offers: OfferType[] = [
         longitude: 4.895168,
         zoom: 10
       },
-      name: 'Amsterdam'
+      name: 'Paris'
     },
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: [
@@ -24,7 +24,7 @@ const offers: OfferType[] = [
     },
     id: 256,
     image: ['/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg'],
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     location: {
       latitude: 52.35514938496378,
