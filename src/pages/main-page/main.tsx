@@ -12,7 +12,6 @@ type PlacesProps = {
 function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
 
   const activeSort = SortBy.Popular;
-  const [...offersAll] = propsOffers;
 
   return (
     <div className="page page--gray page--main">
@@ -59,7 +58,7 @@ function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers propsOffer={offersAll} />
+                <ListOffers propsOffer={propsOffers} />
               </div>
             </section>
             <div className="cities__right-section">

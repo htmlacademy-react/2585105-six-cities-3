@@ -47,8 +47,7 @@ function Offer({ propsOffers, propsReview }: OfferScreenType): JSX.Element {
                   {title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
-                  <svg className={`offer__bookmark-icon${isFavorite ? '--active' : ''}`} width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
+                  <svg className={`offer__bookmark-icon ${isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
