@@ -10,3 +10,19 @@ export enum AuthorizationStatus {
   NotAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN'
 }
+
+export const CityLocations = [
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Amsterdam',
+  'Hamburg',
+  'Dusseldorf',
+];
+
+export const SortBy = {
+  Popular: 'Popular',
+  PriceDown: 'Price: low to high',
+  PriceUp: 'Price: high to low',
+  TopRated: 'Top rated first'
+} as const;

@@ -4,12 +4,12 @@ import Logo from '../../components/logo/logo';
 function NotFoundPage() {
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>6 cities. 404</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
-            <Helmet>
-              <title>6 cities. 404</title>
-            </Helmet>
             <div className="header__left">
               <Logo />
             </div>

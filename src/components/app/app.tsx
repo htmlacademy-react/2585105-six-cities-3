@@ -7,26 +7,31 @@ import Offer from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
+import { OfferType } from '../../types/offer-type';
 
+
+const authStatus = AuthorizationStatus.Auth;
 
 type AppPlacesCards = {
   placesCardsCount: number;
+  offers: OfferType[];
 }
 
 
-function App({ placesCardsCount }: AppPlacesCards): JSX.Element {
+function App({ placesCardsCount, offers }: AppPlacesCards): JSX.Element {
+  const [...offersAll] = offers;
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen placesCount={placesCardsCount} />}
+            element={<MainScreen placesCount={placesCardsCount} propsOffers={offersAll} />}
           />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.NotAuth}>
+              <PrivateRoute authorizationStatus={authStatus}>
                 <Favorites />
               </PrivateRoute>
             }
