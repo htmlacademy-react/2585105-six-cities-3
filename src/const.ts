@@ -26,3 +26,5 @@ export const SortBy = {
   PriceUp: 'Price: high to low',
   TopRated: 'Top rated first'
 } as const;
+
+export const RATING_STARS = 5;

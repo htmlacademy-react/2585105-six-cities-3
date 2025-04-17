@@ -19,11 +19,11 @@ export type Host = {
 export type OfferType = {
   bedrooms: number;
   city?: City;
-  description: string | string[];
+  description: string;
   goods: string[];
   host: Host;
   id: number;
-  image: string;
+  image: string[];
   isFavorite: boolean;
   isPremium: boolean;
   location: Location;

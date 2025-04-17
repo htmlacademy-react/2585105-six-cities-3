@@ -8,17 +8,18 @@ import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { OfferType } from '../../types/offer-type';
+import { CommentType } from '../../types/review-type';
 
 
 const authStatus = AuthorizationStatus.Auth;
 
 type AppPlacesCards = {
-  placesCardsCount: number;
   offers: OfferType[];
+  review: CommentType[];
 }
 
 
-function App({ placesCardsCount, offers }: AppPlacesCards): JSX.Element {
+function App({ offers, review }: AppPlacesCards): JSX.Element {
   const [...offersAll] = offers;
   return (
     <HelmetProvider>
@@ -26,7 +27,7 @@ function App({ placesCardsCount, offers }: AppPlacesCards): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen placesCount={placesCardsCount} propsOffers={offersAll} />}
+            element={<MainScreen placesCount={offers.length} propsOffers={offersAll} />}
           />
           <Route
             path={AppRoute.Favorites}
@@ -42,7 +43,7 @@ function App({ placesCardsCount, offers }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer />}
+            element={<Offer propsOffers={offersAll} propsReview={review} />}
           />
           <Route
             path='*'

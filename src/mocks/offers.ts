@@ -13,7 +13,8 @@ const offers: OfferType[] = [
     },
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: [
-      'Heating'
+      'Heating',
+      'Kitchen'
     ],
     host: {
       avatarUrl: 'img/1.png',
@@ -22,7 +23,7 @@ const offers: OfferType[] = [
       name: 'Angelina'
     },
     id: 256,
-    image: '/markup/img/apartment-02.jpg',
+    image: ['/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg', '/markup/img/apartment-02.jpg'],
     isFavorite: false,
     isPremium: true,
     location: {
@@ -35,7 +36,7 @@ const offers: OfferType[] = [
     price: 200,
     rating: 4.8,
     title: 'Beautiful & luxurious studio at great location',
-    type: 'apartment'
+    type: 'Apartment'
   },
   {
     bedrooms: 2,
@@ -60,7 +61,7 @@ const offers: OfferType[] = [
       name: 'Igor'
     },
     id: 745,
-    image: '/markup/img/apartment-01.jpg',
+    image: ['/markup/img/apartment-01.jpg'],
     isFavorite: false,
     isPremium: false,
     location: {
@@ -73,7 +74,7 @@ const offers: OfferType[] = [
     price: 150,
     rating: 4.6,
     title: 'An independent House',
-    type: 'house'
+    type: 'House'
   },
   {
     bedrooms: 1,
@@ -100,7 +101,7 @@ const offers: OfferType[] = [
       name: 'Natasha'
     },
     id: 568,
-    image: 'markup/img/apartment-03.jpg',
+    image: ['markup/img/apartment-03.jpg'],
     isFavorite: true,
     isPremium: true,
     location: {
@@ -113,7 +114,7 @@ const offers: OfferType[] = [
     price: 170,
     rating: 4.2,
     title: 'The building is green and from',
-    type: 'room'
+    type: 'Room'
   },
   {
     bedrooms: 2,
@@ -138,7 +139,7 @@ const offers: OfferType[] = [
       name: 'Igor'
     },
     id: 1345,
-    image: 'markup/img/apartment-small-03.jpg',
+    image: ['markup/img/apartment-small-03.jpg'],
     isFavorite: true,
     isPremium: false,
     location: {
@@ -151,7 +152,7 @@ const offers: OfferType[] = [
     price: 150,
     rating: 4.6,
     title: 'An independent House',
-    type: 'house'
+    type: 'House'
   },
   {
     bedrooms: 4,
@@ -163,7 +164,7 @@ const offers: OfferType[] = [
       },
       name: 'Dusseldorf'
     },
-    description: ['An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.', 'An independent House'],
+    description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     goods: [
       'Heating',
       'Wi-Fi',
@@ -180,7 +181,7 @@ const offers: OfferType[] = [
       name: 'Sasha'
     },
     id: 65,
-    image: '/markup/img/apartment-02.jpg',
+    image: ['/markup/img/apartment-02.jpg'],
     isFavorite: false,
     isPremium: true,
     location: {
@@ -193,7 +194,7 @@ const offers: OfferType[] = [
     price: 190,
     rating: 3.9,
     title: 'An independent House',
-    type: 'hotel'
+    type: 'Hotel'
   }
 
 ];
