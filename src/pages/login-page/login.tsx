@@ -4,10 +4,10 @@ import Logo from '../../components/logo/logo';
 function Login(): JSX.Element {
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>6 cities. Login</title>
+      </Helmet>
       <header className="header">
-        <Helmet>
-          <title>6 cities. Login</title>
-        </Helmet>
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
