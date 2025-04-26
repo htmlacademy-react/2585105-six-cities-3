@@ -4,25 +4,18 @@ import { calculateRating } from '../../utils';
 
 type CardPlace = {
   offer: OfferType;
-  onCardHover?: (offerId: OfferType['id'] | null) => void;
+  onCardHover: () => void;
+  onOfferMouseLeave?: () => void;
 }
 
 
-function PlaceCard({ offer, onCardHover }: CardPlace) {
+function PlaceCard({ offer, onCardHover, onOfferMouseLeave }: CardPlace) {
 
   const { price, isFavorite, type, previewImage, isPremium, title, rating, id } = offer;
   const pathCard = `/offer/${id}`;
 
-  function handleMouseEnter() {
-    onCardHover?.(id);
-  }
-
-  function handleMouseLeave() {
-    onCardHover?.(null);
-  }
-
   return (
-    <article className="cities__card place-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <article className="cities__card place-card" onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
       {isPremium && <div className="place-card__mark"> <span>Premium</span> </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={pathCard}>

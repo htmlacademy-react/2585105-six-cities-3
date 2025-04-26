@@ -5,11 +5,11 @@ const offers: OfferType[] = [
     bedrooms: 3,
     city: {
       location: {
-        latitude: 52.370216,
-        longitude: 4.895168,
+        latitude: 52.23,
+        longitude: 4.54,
         zoom: 10
       },
-      name: 'Paris'
+      name: 'Amsterdam'
     },
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     goods: [
@@ -27,8 +27,8 @@ const offers: OfferType[] = [
     isFavorite: true,
     isPremium: true,
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8
     },
     maxAdults: 5,
@@ -42,11 +42,11 @@ const offers: OfferType[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 54.370216,
-        longitude: 6.895168,
+        latitude: 52.23,
+        longitude: 4.54,
         zoom: 10
       },
-      name: 'Paris'
+      name: 'Amsterdam'
     },
     description: 'Quiet cozy and picturesque that hides behind ',
     goods: [
@@ -65,13 +65,13 @@ const offers: OfferType[] = [
     isFavorite: false,
     isPremium: false,
     location: {
-      latitude: 53.35514938496378,
-      longitude: 5.673877537499948,
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
       zoom: 5
     },
     maxAdults: 3,
     previewImage: '/markup/img/apartment-01.jpg',
-    price: 150,
+    price: 119,
     rating: 4.6,
     title: 'An independent House',
     type: 'House'
@@ -80,11 +80,11 @@ const offers: OfferType[] = [
     bedrooms: 1,
     city: {
       location: {
-        latitude: 54.670216,
-        longitude: 6.495168,
-        zoom: 6
+        latitude: 52.23,
+        longitude: 4.54,
+        zoom: 10
       },
-      name: 'Brussels'
+      name: 'Amsterdam'
     },
     description: 'Quiet cozy and',
     goods: [
@@ -105,8 +105,8 @@ const offers: OfferType[] = [
     isFavorite: true,
     isPremium: true,
     location: {
-      latitude: 53.75514938496378,
-      longitude: 5.675677537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 7
     },
     maxAdults: 1,
@@ -120,8 +120,46 @@ const offers: OfferType[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 54.370216,
-        longitude: 6.895168,
+        latitude: 52.23,
+        longitude: 4.54,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'Quiet cozy and picturesque that hides behind ',
+    goods: [
+      'Heating',
+      'Wi-Fi',
+      'Kitchen'
+    ],
+    host: {
+      avatarUrl: 'markup/img/avatar-max.jpg',
+      id: 1,
+      isPro: true,
+      name: 'Igor'
+    },
+    id: 1345,
+    image: ['markup/img/apartment-small-03.jpg'],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 5
+    },
+    maxAdults: 3,
+    previewImage: 'markup/img/apartment-small-03.jpg',
+    price: 150,
+    rating: 4.6,
+    title: 'An independent House',
+    type: 'House'
+  },
+  {
+    bedrooms: 2,
+    city: {
+      location: {
+        latitude: 52.23,
+        longitude: 4.54,
         zoom: 10
       },
       name: 'Paris'
@@ -143,58 +181,16 @@ const offers: OfferType[] = [
     isFavorite: true,
     isPremium: false,
     location: {
-      latitude: 53.35514938496378,
-      longitude: 5.673877537499948,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 5
     },
     maxAdults: 3,
     previewImage: 'markup/img/apartment-small-03.jpg',
     price: 150,
     rating: 4.6,
-    title: 'An independent House',
+    title: 'An independent House Paris',
     type: 'House'
-  },
-  {
-    bedrooms: 4,
-    city: {
-      location: {
-        latitude: 43.670216,
-        longitude: 8.495168,
-        zoom: 6
-      },
-      name: 'Dusseldorf'
-    },
-    description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
-    goods: [
-      'Heating',
-      'Wi-Fi',
-      'Kitchen',
-      'Dishwasher',
-      'Cabel TV',
-      'Fridge',
-      'Towels'
-    ],
-    host: {
-      avatarUrl: 'markup/img/avatar-max.jpg',
-      id: 4,
-      isPro: false,
-      name: 'Sasha'
-    },
-    id: 65,
-    image: ['/markup/img/apartment-02.jpg'],
-    isFavorite: false,
-    isPremium: true,
-    location: {
-      latitude: 45.75514938496378,
-      longitude: 7.675677537499948,
-      zoom: 7
-    },
-    maxAdults: 6,
-    previewImage: '/markup/img/apartment-02.jpg',
-    price: 190,
-    rating: 3.9,
-    title: 'An independent House',
-    type: 'Hotel'
   }
 
 ];

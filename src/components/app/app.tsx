@@ -20,8 +20,6 @@ type AppPlacesCards = {
 
 
 function App({ offers, review }: AppPlacesCards): JSX.Element {
-  const [...offersAll] = offers;
-  const [...reviewAll] = review;
 
   return (
     <HelmetProvider>
@@ -29,13 +27,13 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainScreen placesCount={offers.length} propsOffers={offersAll} />}
+            element={<MainScreen propsOffers={offers} />}
           />
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authStatus}>
-                <FavoritesPage propsOffers={offersAll} />
+                <FavoritesPage propsOffers={offers} />
               </PrivateRoute>
             }
           />
@@ -45,7 +43,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={offersAll} propsReview={reviewAll} />}
+            element={<Offer propsOffers={offers} propsReview={review} />}
           />
           <Route
             path='*'

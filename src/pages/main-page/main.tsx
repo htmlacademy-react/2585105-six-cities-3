@@ -3,15 +3,34 @@ import Header from '../../components/header/header';
 import { CityLocations, SortBy } from '../../const';
 import { OfferType } from '../../types/offer-type';
 import ListOffers from '../../components/List-offers/List-offers';
+import Map from '../../components/map/map';
+import { useState } from 'react';
 
 type PlacesProps = {
-  placesCount: number;
   propsOffers: OfferType[];
 }
 
-function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
+function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
 
   const activeSort = SortBy.Popular;
+  const checkedCity = 'Amsterdam';
+
+  const filteredOffers = propsOffers.filter((item) => (
+    checkedCity === item.city?.name
+  ));
+
+  const checkedCityCoordinates = filteredOffers[0].city;
+
+  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
+
+  function handleOfferSelected(offerId: number) {
+    const currentOffer = filteredOffers.find((offer) => offer.id === offerId) || null;
+    setSelectedOffer(currentOffer);
+  }
+
+  function handleOfferLeave() {
+    setSelectedOffer(null);
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -26,7 +45,7 @@ function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
             <ul className="locations__list tabs__list">
               {CityLocations.map((city) => (
                 <li key={city} className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
+                  <a className={`locations__item-link tabs__item ${city === checkedCity ? 'tabs__item--active' : ''}`} href="#">
                     <span>{city}</span>
                   </a>
                 </li>
@@ -38,7 +57,7 @@ function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+              <b className="places__found">{propsOffers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -58,11 +77,11 @@ function MainScreen({ placesCount, propsOffers }: PlacesProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers propsOffer={propsOffers} />
+                <ListOffers propsOffer={filteredOffers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <Map city={checkedCityCoordinates} offers={filteredOffers} selectedOffer={selectedOffer} />
             </div>
           </div>
         </div>
