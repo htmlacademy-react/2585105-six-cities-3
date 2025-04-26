@@ -15,6 +15,9 @@ export default function ListOffers({ propsOffer, onOfferHover, onOfferLeave }: L
 
 
   function handleCardHover(id: number | null) {
+    if (!id) {
+      return;
+    }
     setHoverOfferId(id);
     onOfferHover(id);
   }
@@ -29,9 +32,10 @@ export default function ListOffers({ propsOffer, onOfferHover, onOfferLeave }: L
       {propsOffer.map((offer) => (
         <PlaceCard
           key={offer.id}
-          offer={{ ...offer }}
+          offer={offer}
           onCardHover={() => handleCardHover(offer.id)}
           onOfferMouseLeave={handleCardMouseLeave}
+
         />))}
     </>
 
