@@ -6,7 +6,7 @@ import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
 import { City, OfferType } from '../../types/offer-type';
 
 type CityLocation = {
-  city: City;
+  city?: City;
   offers: OfferType[];
   selectedOffer: OfferType | null;
 }
