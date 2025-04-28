@@ -17,13 +17,20 @@ type OfferScreenType = {
   defaultCity: City;
   onOfferHover: (id: number) => void;
   onOfferLeave: () => void;
+  selectedOffer: OfferType | null;
 }
 
-function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLeave }: OfferScreenType): JSX.Element {
+function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLeave, selectedOffer }: OfferScreenType) {
   const { id } = useParams();
   const [offerId, setHoverOfferId] = useState<number | null>(null);
 
-  const [{ image, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = propsOffers.filter((item) => item.id.toString() === id);
+  const currentOffer = propsOffers.filter((item) => item.id.toString() === id);
+
+  if (!currentOffer) {
+    return null;
+  }
+
+  const [{ image, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = currentOffer;
 
   function handleCardHover(item: number | null) {
     if (!item) {
@@ -127,7 +134,7 @@ function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLea
 
             </div>
           </div>
-          <Map city={city || defaultCity} offers={propsOffers} blockMap={'offer'} />
+          <Map city={city || defaultCity} offers={propsOffers} blockMap={'offer'} selectedOffer={selectedOffer} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -141,7 +148,7 @@ function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLea
                   offer={{ ...offer }}
                   onCardHover={() => handleCardHover(offer.id)}
                   onOfferMouseLeave={handleCardMouseLeave}
-                  block={'near-places'}
+                  block='near-places'
                 />
               ))}
             </div>

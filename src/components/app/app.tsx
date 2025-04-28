@@ -78,7 +78,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />}
+            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} selectedOffer={selectedOffer} />}
           />
           <Route
             path='*'
