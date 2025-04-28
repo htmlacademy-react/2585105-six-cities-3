@@ -1,14 +1,15 @@
 import dayjs from 'dayjs';
 import { RATING_STARS } from './const';
 
-const calculateRating = (rating: number, stars: number = RATING_STARS) => Math.round(rating * 100 / stars);
+const calculateRating = (rating: number, stars: number = RATING_STARS) =>
+  Math.round(rating * 100 / stars);
 
-const formatDateComment = (date: string) => dayjs(date).format('MMMM YYYY');
+const formatDateComment = (date: string) =>
+  dayjs(date).format('MMMM YYYY');
 
-function sortDay(firstReview: string, secondReview: string) {
-  const firstPointDate = dayjs(firstReview);
-  const secondPointDate = dayjs(secondReview);
-  return firstPointDate.diff(secondPointDate);
+function sortDay<T extends Record<string, string>>(fieldName: string) {
+  return (a: T, b: T) =>
+    dayjs(b[fieldName]).valueOf() - dayjs(a[fieldName]).valueOf();
 }
 
 export { calculateRating, formatDateComment, sortDay };

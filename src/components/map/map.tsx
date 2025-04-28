@@ -6,9 +6,10 @@ import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../const';
 import { City, OfferType } from '../../types/offer-type';
 
 type CityLocation = {
-  city?: City;
+  city: City;
   offers: OfferType[];
-  selectedOffer: OfferType | null;
+  selectedOffer?: OfferType | null;
+  blockMap: string;
 }
 
 const defaultCustomIcon = new Icon({
@@ -23,7 +24,7 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-export default function Map({ city, offers, selectedOffer }: CityLocation) {
+export default function Map({ city, offers, selectedOffer, blockMap }: CityLocation) {
   const mapRef = useRef(null);
 
   const map = useMap({ mapRef, city });
@@ -49,6 +50,6 @@ export default function Map({ city, offers, selectedOffer }: CityLocation) {
   }, [map, offers, selectedOffer]);
 
   return (
-    <section className="cities__map map" ref={mapRef} />
+    <section className={`${blockMap}__map map`} ref={mapRef} />
   );
 }
