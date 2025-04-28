@@ -10,7 +10,7 @@ export default function Reviews({ reviewsProp }: ReviewType) {
     <>
       <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviewsProp.length}</span></h2>
       <ul className="reviews__list">
-        {reviewsProp.sort(sortDay('date')).slice(0, 10).map(({ rating, id, user, comment, date }) =>
+        {reviewsProp.sort(sortDay).slice(0, 10).map(({ rating, id, user, comment, date }) =>
         (
           <li className="reviews__item" key={id}>
             <div className="reviews__user user">

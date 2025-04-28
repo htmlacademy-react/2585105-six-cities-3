@@ -11,20 +11,26 @@ type PlacesProps = {
 }
 
 function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
+
   const activeSort = SortBy.Popular;
   const checkedCity = 'Amsterdam';
-
 
   const filteredOffers = propsOffers.filter((item) => (
     checkedCity === item.city?.name
   ));
 
+  const checkedCityCoordinates = filteredOffers[0].city;
 
-  const checkedCityCoordinates = filteredOffers.length > 0 ? filteredOffers[0].city : undefined;
-
+  const defaultCity = {
+    location: {
+      latitude: 52.23,
+      longitude: 4.54,
+      zoom: 10
+    },
+    name: 'Amsterdam'
+  };
 
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-
 
   function handleOfferSelected(offerId: number) {
     const currentOffer = filteredOffers.find((offer) => offer.id === offerId) || null;
@@ -48,10 +54,7 @@ function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
             <ul className="locations__list tabs__list">
               {CityLocations.map((city) => (
                 <li key={city} className="locations__item">
-                  <a
-                    className={`locations__item-link tabs__item ${city === checkedCity ? 'tabs__item--active' : ''}`}
-                    href="#"
-                  >
+                  <a className={`locations__item-link tabs__item ${city === checkedCity ? 'tabs__item--active' : ''}`} href="#">
                     <span>{city}</span>
                   </a>
                 </li>
@@ -63,7 +66,7 @@ function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{filteredOffers.length} places to stay in {checkedCity}</b>
+              <b className="places__found">{propsOffers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -74,33 +77,20 @@ function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
                 </span>
                 <ul className="places__options places__options--custom places__options--opened">
                   {Object.values(SortBy).map((sort, index) => (
-                    <li
-                      key={sort}
-                      className={`places__option ${sort === activeSort ? 'places__option--active' : ''}`}
+                    <li key={sort}
+                      className="places__option places__option--active"
                       tabIndex={index}
                     >
                       {sort}
-                    </li>
-                  ))}
+                    </li>))}
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers
-                  propsOffer={filteredOffers}
-                  onOfferHover={handleOfferSelected}
-                  onOfferLeave={handleOfferLeave}
-                />
+                <ListOffers propsOffer={filteredOffers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
               </div>
             </section>
             <div className="cities__right-section">
-              {checkedCityCoordinates && (
-                <Map
-                  city={checkedCityCoordinates}
-                  offers={filteredOffers}
-                  selectedOffer={selectedOffer}
-                  blockMap="cities"
-                />
-              )}
+              <Map city={checkedCityCoordinates || defaultCity} offers={filteredOffers} selectedOffer={selectedOffer} blockMap={'cities'} />
             </div>
           </div>
         </div>
