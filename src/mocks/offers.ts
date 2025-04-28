@@ -77,46 +77,6 @@ const offers: OfferType[] = [
     type: 'House'
   },
   {
-    bedrooms: 1,
-    city: {
-      location: {
-        latitude: 52.23,
-        longitude: 4.54,
-        zoom: 10
-      },
-      name: 'Amsterdam'
-    },
-    description: 'Quiet cozy and',
-    goods: [
-      'Heating',
-      'Wi-Fi',
-      'Kitchen',
-      'Dishwasher',
-      'Cabel TV'
-    ],
-    host: {
-      avatarUrl: 'markup/img/avatar-angelina.jpg',
-      id: 2,
-      isPro: false,
-      name: 'Natasha'
-    },
-    id: 568,
-    image: ['markup/img/apartment-03.jpg'],
-    isFavorite: true,
-    isPremium: true,
-    location: {
-      latitude: 52.3909553943508,
-      longitude: 4.929309666406198,
-      zoom: 7
-    },
-    maxAdults: 1,
-    previewImage: 'markup/img/apartment-03.jpg',
-    price: 170,
-    rating: 4.2,
-    title: 'The building is green and from',
-    type: 'Room'
-  },
-  {
     bedrooms: 2,
     city: {
       location: {
