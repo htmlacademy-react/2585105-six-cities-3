@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { CityLocations, SortBy } from '../../const';
+import { CITY_LOCATIONS, SortBy } from '../../const';
 import { City, OfferType } from '../../types/offer-type';
 import ListOffers from '../../components/List-offers/List-offers';
 import Map from '../../components/map/map';
@@ -31,8 +31,8 @@ function MainScreen({ propsOffers, defaultCity, checkedCity, onOfferHover, onOff
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {CityLocations.map((city) => (
-                <li key={city} className="locations__item">
+              {CITY_LOCATIONS.map((city) => (
+                <li key={city} className="locations__item" data-city={city}>
                   <a className={`locations__item-link tabs__item ${city === checkedCity ? 'tabs__item--active' : ''}`} href="#">
                     <span>{city}</span>
                   </a>
