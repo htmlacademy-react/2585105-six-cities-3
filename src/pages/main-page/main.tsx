@@ -1,24 +1,35 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { CITY_LOCATIONS, SortBy } from '../../const';
+import { SortBy } from '../../const';
 import { City, OfferType } from '../../types/offer-type';
 import ListOffers from '../../components/List-offers/List-offers';
 import Map from '../../components/map/map';
+import ListCities from '../../components/list-cities/list-cities';
+import { useState } from 'react';
 
 type PlacesProps = {
   propsOffers: OfferType[];
   defaultCity: City;
   checkedCity: string;
-  onOfferHover: (id: number) => void;
-  onOfferLeave: () => void;
-  selectedOffer?: OfferType | null;
 }
 
-function MainScreen({ propsOffers, defaultCity, checkedCity, onOfferHover, onOfferLeave, selectedOffer }: PlacesProps): JSX.Element {
+function MainScreen({ propsOffers, defaultCity, checkedCity }: PlacesProps): JSX.Element {
 
   const activeSort = SortBy.Popular;
 
   const checkedCityCoordinates = propsOffers[0].city;
+
+  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
+
+  function handleOfferSelected(offerId: number) {
+    const currentOffer = propsOffers.find((offer) => offer.id === offerId) || null;
+    setSelectedOffer(currentOffer);
+  }
+
+  function handleOfferLeave() {
+    setSelectedOffer(null);
+  }
+
 
   return (
     <div className="page page--gray page--main">
@@ -31,13 +42,7 @@ function MainScreen({ propsOffers, defaultCity, checkedCity, onOfferHover, onOff
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {CITY_LOCATIONS.map((city) => (
-                <li key={city} className="locations__item" data-city={city}>
-                  <a className={`locations__item-link tabs__item ${city === checkedCity ? 'tabs__item--active' : ''}`} href="#">
-                    <span>{city}</span>
-                  </a>
-                </li>
-              ))}
+              <ListCities checkedCity={checkedCity} />
             </ul>
           </section>
         </div>
@@ -65,7 +70,7 @@ function MainScreen({ propsOffers, defaultCity, checkedCity, onOfferHover, onOff
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers propsOffer={propsOffers} onOfferHover={onOfferHover} onOfferLeave={onOfferLeave} />
+                <ListOffers propsOffer={propsOffers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
               </div>
             </section>
             <div className="cities__right-section">

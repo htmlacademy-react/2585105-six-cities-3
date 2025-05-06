@@ -8,21 +8,16 @@ import ReviewForm from '../../components/review-form/review-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import PlaceCard from '../../components/place-card/place-card';
-import { useState } from 'react';
 
 
 type OfferScreenType = {
   propsOffers: OfferType[];
   propsReview: CommentType[];
   defaultCity: City;
-  onOfferHover: (id: number) => void;
-  onOfferLeave: () => void;
-  selectedOffer: OfferType | null;
 }
 
-function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLeave, selectedOffer }: OfferScreenType) {
+function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
   const { id } = useParams();
-  const [offerId, setHoverOfferId] = useState<number | null>(null);
 
   const currentOffer = propsOffers.filter((item) => item.id.toString() === id);
 
@@ -31,19 +26,6 @@ function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLea
   }
 
   const [{ image, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = currentOffer;
-
-  function handleCardHover(item: number | null) {
-    if (!item) {
-      return;
-    }
-    setHoverOfferId(item);
-    onOfferHover(item);
-  }
-
-  function handleCardMouseLeave() {
-    setHoverOfferId(offerId);
-    onOfferLeave();
-  }
 
   return (
     <div className="page">
@@ -134,7 +116,7 @@ function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLea
 
             </div>
           </div>
-          <Map city={city || defaultCity} offers={propsOffers} blockMap={'offer'} selectedOffer={selectedOffer} />
+          <Map city={city || defaultCity} offers={propsOffers} blockMap={'offer'} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -146,8 +128,6 @@ function Offer({ propsOffers, propsReview, defaultCity, onOfferHover, onOfferLea
                 <PlaceCard
                   key={offer.id}
                   offer={{ ...offer }}
-                  onCardHover={() => handleCardHover(offer.id)}
-                  onOfferMouseLeave={handleCardMouseLeave}
                   block='near-places'
                 />
               ))}

@@ -9,8 +9,6 @@ import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { OfferType } from '../../types/offer-type';
 import { CommentType } from '../../types/review-type';
-import { useState } from 'react';
-
 
 const authStatus = AuthorizationStatus.Auth;
 
@@ -28,24 +26,12 @@ const defaultCity = {
   name: 'Amsterdam'
 };
 
-
 function App({ offers, review }: AppPlacesCards): JSX.Element {
   const checkedCity = 'Amsterdam';
 
   const filteredOffers = offers.filter((item) => (
     checkedCity === item.city?.name
   ));
-
-  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-
-  function handleOfferSelected(offerId: number) {
-    const currentOffer = offers.find((offer) => offer.id === offerId) || null;
-    setSelectedOffer(currentOffer);
-  }
-
-  function handleOfferLeave() {
-    setSelectedOffer(null);
-  }
 
   return (
     <HelmetProvider>
@@ -58,9 +44,6 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
                 propsOffers={filteredOffers}
                 defaultCity={defaultCity}
                 checkedCity={checkedCity}
-                onOfferHover={handleOfferSelected}
-                onOfferLeave={handleOfferLeave}
-                selectedOffer={selectedOffer}
               />
             }
           />
@@ -78,7 +61,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} selectedOffer={selectedOffer} />}
+            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} />}
           />
           <Route
             path='*'
