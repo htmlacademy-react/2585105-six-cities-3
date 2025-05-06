@@ -15,15 +15,6 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
   const { price, isFavorite, type, previewImage, isPremium, title, rating, id } = offer;
   const pathCard = `/offer/${id}`;
 
-  // function handleMouseEnter() {
-  //   onCardHover?.(id);
-  // }
-
-  // function handleMouseLeave() {
-  //   onCardHover?.(null);
-  //   onOfferMouseLeave();
-  // }
-
   return (
     <article className={`${block}__card place-card`} onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
       {isPremium && <div className="place-card__mark"> <span>Premium</span> </div>}

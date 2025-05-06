@@ -9,6 +9,8 @@ import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { OfferType } from '../../types/offer-type';
 import { CommentType } from '../../types/review-type';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { updateOffers } from '../../store/action';
 
 const authStatus = AuthorizationStatus.Auth;
 
@@ -27,8 +29,12 @@ const defaultCity = {
 };
 
 function App({ offers, review }: AppPlacesCards): JSX.Element {
-  const checkedCity = 'Amsterdam';
 
+  const dispatch = useAppDispatch();
+  if (offers) {
+    dispatch(updateOffers(offers));
+  }
+  const checkedCity = useAppSelector((state) => state.selectedCity);
   const filteredOffers = offers.filter((item) => (
     checkedCity === item.city?.name
   ));
@@ -43,7 +49,6 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
               <MainScreen
                 propsOffers={filteredOffers}
                 defaultCity={defaultCity}
-                checkedCity={checkedCity}
               />
             }
           />
