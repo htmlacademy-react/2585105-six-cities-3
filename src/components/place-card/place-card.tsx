@@ -6,18 +6,20 @@ type CardPlace = {
   offer: OfferType;
   onCardHover: () => void;
   onOfferMouseLeave?: () => void;
+  block: string;
 }
 
 
-function PlaceCard({ offer, onCardHover, onOfferMouseLeave }: CardPlace) {
+function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) {
 
   const { price, isFavorite, type, previewImage, isPremium, title, rating, id } = offer;
   const pathCard = `/offer/${id}`;
 
+
   return (
-    <article className="cities__card place-card" onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
+    <article className={`${block}__card place-card`} onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
       {isPremium && <div className="place-card__mark"> <span>Premium</span> </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${block}__image-wrapper place-card__image-wrapper`}>
         <Link to={pathCard}>
           <img
             className="place-card__image"

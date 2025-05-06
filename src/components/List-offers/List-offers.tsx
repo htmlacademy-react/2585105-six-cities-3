@@ -35,7 +35,7 @@ export default function ListOffers({ propsOffer, onOfferHover, onOfferLeave }: L
           offer={offer}
           onCardHover={() => handleCardHover(offer.id)}
           onOfferMouseLeave={handleCardMouseLeave}
-
+          block='cities'
         />))}
     </>
 

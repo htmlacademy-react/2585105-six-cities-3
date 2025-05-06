@@ -1,36 +1,24 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { CityLocations, SortBy } from '../../const';
-import { OfferType } from '../../types/offer-type';
+import { City, OfferType } from '../../types/offer-type';
 import ListOffers from '../../components/List-offers/List-offers';
 import Map from '../../components/map/map';
-import { useState } from 'react';
 
 type PlacesProps = {
   propsOffers: OfferType[];
+  defaultCity: City;
+  checkedCity: string;
+  onOfferHover: (id: number) => void;
+  onOfferLeave: () => void;
+  selectedOffer?: OfferType | null;
 }
 
-function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
+function MainScreen({ propsOffers, defaultCity, checkedCity, onOfferHover, onOfferLeave, selectedOffer }: PlacesProps): JSX.Element {
 
   const activeSort = SortBy.Popular;
-  const checkedCity = 'Amsterdam';
 
-  const filteredOffers = propsOffers.filter((item) => (
-    checkedCity === item.city?.name
-  ));
-
-  const checkedCityCoordinates = filteredOffers[0].city;
-
-  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-
-  function handleOfferSelected(offerId: number) {
-    const currentOffer = filteredOffers.find((offer) => offer.id === offerId) || null;
-    setSelectedOffer(currentOffer);
-  }
-
-  function handleOfferLeave() {
-    setSelectedOffer(null);
-  }
+  const checkedCityCoordinates = propsOffers[0].city;
 
   return (
     <div className="page page--gray page--main">
@@ -77,11 +65,11 @@ function MainScreen({ propsOffers }: PlacesProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ListOffers propsOffer={filteredOffers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
+                <ListOffers propsOffer={propsOffers} onOfferHover={onOfferHover} onOfferLeave={onOfferLeave} />
               </div>
             </section>
             <div className="cities__right-section">
-              <Map city={checkedCityCoordinates} offers={filteredOffers} selectedOffer={selectedOffer} />
+              <Map city={checkedCityCoordinates || defaultCity} offers={propsOffers} selectedOffer={selectedOffer} blockMap={'cities'} />
             </div>
           </div>
         </div>
