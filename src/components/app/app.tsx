@@ -7,17 +7,10 @@ import Offer from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { OfferType } from '../../types/offer-type';
-import { CommentType } from '../../types/review-type';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { updateOffers } from '../../store/action';
+import { useAppSelector } from '../../store/hooks';
 
 const authStatus = AuthorizationStatus.Auth;
 
-type AppPlacesCards = {
-  offers: OfferType[];
-  review: CommentType[];
-}
 
 const defaultCity = {
   location: {
@@ -28,15 +21,13 @@ const defaultCity = {
   name: 'Amsterdam'
 };
 
-function App({ offers, review }: AppPlacesCards): JSX.Element {
+function App(): JSX.Element {
+  const offersAll = useAppSelector((state) => state.offers);
+  const checkedCityName = useAppSelector((state) => state.selectedCity);
+  const reviews = useAppSelector((state) => state.reviews);
 
-  const dispatch = useAppDispatch();
-  if (offers) {
-    dispatch(updateOffers(offers));
-  }
-  const checkedCity = useAppSelector((state) => state.selectedCity);
-  const filteredOffers = offers.filter((item) => (
-    checkedCity === item.city?.name
+  const filteredOffers = offersAll.filter((item) => (
+    checkedCityName === item.city?.name
   ));
 
   return (
@@ -47,8 +38,8 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
             path={AppRoute.Main}
             element={
               <MainScreen
-                propsOffers={filteredOffers}
                 defaultCity={defaultCity}
+                offers={filteredOffers}
               />
             }
           />
@@ -56,7 +47,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authStatus}>
-                <FavoritesPage propsOffers={offers} />
+                <FavoritesPage propsOffers={offersAll} />
               </PrivateRoute>
             }
           />
@@ -66,7 +57,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} />}
+            element={<Offer propsOffers={filteredOffers} propsReview={reviews} defaultCity={defaultCity} />}
           />
           <Route
             path='*'

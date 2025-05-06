@@ -6,22 +6,22 @@ import ListOffers from '../../components/List-offers/List-offers';
 import Map from '../../components/map/map';
 import ListCities from '../../components/list-cities/list-cities';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../store/hooks';
 
 type PlacesProps = {
-  propsOffers: OfferType[];
   defaultCity: City;
+  offers: OfferType[];
 }
 
-function MainScreen({ propsOffers, defaultCity }: PlacesProps): JSX.Element {
+function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
   const activeSort = SortBy.Popular;
-  const checkedCity = useAppSelector((state) => state.selectedCity);
-  const checkedCityCoordinates = propsOffers[0].city;
 
+  const checkedCityName = useAppSelector((state) => state.selectedCity);
+  const city = offers.find((item) => item.city?.name === checkedCityName)?.city;
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
 
   function handleOfferSelected(offerId: number) {
-    const currentOffer = propsOffers.find((offer) => offer.id === offerId) || null;
+    const currentOffer = offers.find((offer) => offer.id === offerId) || null;
     setSelectedOffer(currentOffer);
   }
 
@@ -35,17 +35,18 @@ function MainScreen({ propsOffers, defaultCity }: PlacesProps): JSX.Element {
         <title>6 cities</title>
       </Helmet>
       <Header />
-      <main className={`page__main page__main--index ${propsOffers.length !== 0 ? '' : 'page__main--index-empty'}`}>
+      <main className={`page__main page__main--index ${offers.length !== 0 ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <ListCities />
+          <section className="locations container"><ListCities checkedCityName={checkedCityName} /></section>
+
         </div>
         <div className="cities">
-          <div className={`cities__places-container ${propsOffers.length !== 0 ? '' : 'cities__places-container--empty'} container`}>
-            {propsOffers.length !== 0 ? (
+          <div className={`cities__places-container ${offers.length !== 0 ? '' : 'cities__places-container--empty'} container`}>
+            {offers.length !== 0 ? (
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{propsOffers.length} places to stay in {checkedCity}</b>
+                <b className="places__found">{offers.length} places to stay in {checkedCityName}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -65,20 +66,20 @@ function MainScreen({ propsOffers, defaultCity }: PlacesProps): JSX.Element {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  <ListOffers propsOffer={propsOffers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
+                  <ListOffers propsOffer={offers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
                 </div>
               </section>
             ) : (
-              <section className='cities__no-places'>
-                <div className='cities__status-wrapper tabs__content'>
-                  <b className='cities__status'>No places to stay available</b>
-                  <p className='cities__status-description'>We could not find any property available at the moment in Dusseldorf</p>
+              <section className="cities__no-places">
+                <div className="cities__status-wrapper tabs__content">
+                  <b className="cities__status">No places to stay available</b>
+                  <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
                 </div>
               </section>
             )}
 
             <div className="cities__right-section">
-              {propsOffers.length !== 0 && <Map city={checkedCityCoordinates || defaultCity} offers={propsOffers} selectedOffer={selectedOffer} blockMap={'cities'} />}
+              {offers.length !== 0 ? <Map city={city || defaultCity} offers={offers} selectedOffer={selectedOffer} blockMap={'cities'} /> : ''}
             </div>
           </div>
         </div>
