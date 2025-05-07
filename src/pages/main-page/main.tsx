@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { SortBy } from '../../const';
 import { City, OfferType } from '../../types/offer-type';
 import ListOffers from '../../components/List-offers/List-offers';
 import Map from '../../components/map/map';
 import ListCities from '../../components/list-cities/list-cities';
 import { useState } from 'react';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import Sorting from '../../components/sorting/sorting';
+import { changeSorting } from '../../store/action';
 
 type PlacesProps = {
   defaultCity: City;
@@ -14,8 +15,7 @@ type PlacesProps = {
 }
 
 function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
-  const activeSort = SortBy.Popular;
-
+  const dispatch = useAppDispatch();
   const checkedCityName = useAppSelector((state) => state.selectedCity);
   const city = offers.find((item) => item.city?.name === checkedCityName)?.city;
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
@@ -27,6 +27,10 @@ function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
 
   function handleOfferLeave() {
     setSelectedOffer(null);
+  }
+
+  function handleToogleSort(sort: string) {
+    dispatch(changeSorting(sort));
   }
 
   return (
@@ -47,24 +51,7 @@ function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{offers.length} places to stay in {checkedCityName}</b>
-                <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex={0}>
-                    {activeSort}
-                    <svg className="places__sorting-arrow" width={7} height={4}>
-                      <use xlinkHref="#icon-arrow-select" />
-                    </svg>
-                  </span>
-                  <ul className="places__options places__options--custom places__options--opened">
-                    {Object.values(SortBy).map((sort, index) => (
-                      <li key={sort}
-                        className="places__option places__option--active"
-                        tabIndex={index}
-                      >
-                        {sort}
-                      </li>))}
-                  </ul>
-                </form>
+                <Sorting onChange={handleToogleSort} />
                 <div className="cities__places-list places__list tabs__content">
                   <ListOffers propsOffer={offers} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} />
                 </div>
