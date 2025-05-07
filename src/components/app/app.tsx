@@ -7,17 +7,10 @@ import Offer from '../../pages/offer-page/offer';
 import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { OfferType } from '../../types/offer-type';
-import { CommentType } from '../../types/review-type';
-import { useState } from 'react';
-
+import { useAppSelector } from '../../store/hooks';
 
 const authStatus = AuthorizationStatus.Auth;
 
-type AppPlacesCards = {
-  offers: OfferType[];
-  review: CommentType[];
-}
 
 const defaultCity = {
   location: {
@@ -28,24 +21,14 @@ const defaultCity = {
   name: 'Amsterdam'
 };
 
+function App(): JSX.Element {
+  const offersAll = useAppSelector((state) => state.offers);
+  const checkedCityName = useAppSelector((state) => state.selectedCity);
+  const reviews = useAppSelector((state) => state.reviews);
 
-function App({ offers, review }: AppPlacesCards): JSX.Element {
-  const checkedCity = 'Amsterdam';
-
-  const filteredOffers = offers.filter((item) => (
-    checkedCity === item.city?.name
+  const filteredOffers = offersAll.filter((item) => (
+    checkedCityName === item.city?.name
   ));
-
-  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-
-  function handleOfferSelected(offerId: number) {
-    const currentOffer = offers.find((offer) => offer.id === offerId) || null;
-    setSelectedOffer(currentOffer);
-  }
-
-  function handleOfferLeave() {
-    setSelectedOffer(null);
-  }
 
   return (
     <HelmetProvider>
@@ -55,12 +38,8 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
             path={AppRoute.Main}
             element={
               <MainScreen
-                propsOffers={filteredOffers}
                 defaultCity={defaultCity}
-                checkedCity={checkedCity}
-                onOfferHover={handleOfferSelected}
-                onOfferLeave={handleOfferLeave}
-                selectedOffer={selectedOffer}
+                offers={filteredOffers}
               />
             }
           />
@@ -68,7 +47,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authStatus}>
-                <FavoritesPage propsOffers={offers} />
+                <FavoritesPage propsOffers={offersAll} />
               </PrivateRoute>
             }
           />
@@ -78,7 +57,7 @@ function App({ offers, review }: AppPlacesCards): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={review} defaultCity={defaultCity} onOfferHover={handleOfferSelected} onOfferLeave={handleOfferLeave} selectedOffer={selectedOffer} />}
+            element={<Offer propsOffers={filteredOffers} propsReview={reviews} defaultCity={defaultCity} />}
           />
           <Route
             path='*'

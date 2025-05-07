@@ -118,8 +118,8 @@ const offers: OfferType[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 52.23,
-        longitude: 4.54,
+        latitude: 48.5,
+        longitude: 2.20,
         zoom: 10
       },
       name: 'Paris'
@@ -141,8 +141,8 @@ const offers: OfferType[] = [
     isFavorite: true,
     isPremium: false,
     location: {
-      latitude: 52.3809553943508,
-      longitude: 4.939309666406198,
+      latitude: 48.86461439756179,
+      longitude: 2.3745008201536595,
       zoom: 5
     },
     maxAdults: 3,
