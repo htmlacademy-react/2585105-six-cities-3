@@ -31,15 +31,13 @@ export default function ListOffers({ propsOffer, onOfferHover, onOfferLeave }: L
 
   return (
     <>
-      {sortOffers?.map((offer) => (
+      {sortOffers.map((offer) => (
         <PlaceCard
           key={offer.id}
           offer={offer}
           onCardHover={() => handleCardHover(offer.id)}
           onOfferMouseLeave={handleCardMouseLeave}
           block='cities'
-        />)) || null}
-    </>
-
-  );
+        />))}
+    </>);
 }
