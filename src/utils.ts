@@ -16,13 +16,15 @@ function sortDayComment(a: CommentType, b: CommentType) {
 function sortingByOption(offers: OfferType[], activeSort: string) {
   switch (activeSort) {
     case SortBy.PriceDown:
-      return offers.slice().sort((OfferA: OfferType, OfferB: OfferType) => OfferA.price - OfferB.price);
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferA.price - OfferB.price);
     case SortBy.PriceUp:
-      return offers.slice().sort((OfferA: OfferType, OfferB: OfferType) => OfferB.price - OfferA.price);
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferB.price - OfferA.price);
     case SortBy.Popular:
       return offers;
     case SortBy.TopRated:
-      return offers.slice().sort((OfferA: OfferType, OfferB: OfferType) => OfferB.rating - OfferA.rating);
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferB.rating - OfferA.rating);
+    default:
+      return offers;
   }
 }
 
