@@ -9,7 +9,7 @@ import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../store/hooks';
 
-const authStatus = AuthorizationStatus.Auth;
+const authStatus = AuthorizationStatus.NotAuth;
 
 
 const defaultCity = {
