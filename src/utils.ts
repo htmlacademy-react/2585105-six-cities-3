@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
-import { RATING_STARS } from './const';
+import { RATING_STARS, SortBy } from './const';
 import { CommentType } from './types/review-type';
+import { OfferType } from './types/offer-type';
 
 const calculateRating = (rating: number, stars: number = RATING_STARS) => Math.round(rating * 100 / stars);
 
@@ -12,4 +13,19 @@ function sortDayComment(a: CommentType, b: CommentType) {
   return date2.diff(date1);
 }
 
-export { calculateRating, formatDateComment, sortDayComment };
+function sortingByOption(offers: OfferType[], activeSort: string) {
+  switch (activeSort) {
+    case SortBy.PriceDown:
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferA.price - OfferB.price);
+    case SortBy.PriceUp:
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferB.price - OfferA.price);
+    case SortBy.Popular:
+      return offers;
+    case SortBy.TopRated:
+      return offers.toSorted((OfferA: OfferType, OfferB: OfferType) => OfferB.rating - OfferA.rating);
+    default:
+      return offers;
+  }
+}
+
+export { calculateRating, formatDateComment, sortDayComment, sortingByOption };

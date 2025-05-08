@@ -51,7 +51,7 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: calculateRating(rating) }} />
+            <span style={{ width: `${calculateRating(rating)}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

@@ -34,7 +34,7 @@ const offers: OfferType[] = [
     maxAdults: 5,
     previewImage: '/markup/img/apartment-02.jpg',
     price: 200,
-    rating: 4.8,
+    rating: 3.5,
     title: 'Beautiful & luxurious studio at great location',
     type: 'Apartment'
   },
@@ -72,7 +72,7 @@ const offers: OfferType[] = [
     maxAdults: 3,
     previewImage: '/markup/img/apartment-01.jpg',
     price: 119,
-    rating: 4.6,
+    rating: 2.1,
     title: 'An independent House',
     type: 'House'
   },
@@ -110,7 +110,7 @@ const offers: OfferType[] = [
     maxAdults: 3,
     previewImage: 'markup/img/apartment-small-03.jpg',
     price: 150,
-    rating: 4.6,
+    rating: 2.8,
     title: 'An independent House',
     type: 'House'
   },
@@ -148,7 +148,7 @@ const offers: OfferType[] = [
     maxAdults: 3,
     previewImage: 'markup/img/apartment-small-03.jpg',
     price: 150,
-    rating: 4.6,
+    rating: 1.8,
     title: 'An independent House Paris',
     type: 'House'
   }
