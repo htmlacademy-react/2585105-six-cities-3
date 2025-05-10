@@ -10,7 +10,7 @@ type initialState = {
   offers: OfferType[];
   reviews: CommentType[];
   activeSort: string;
-  authorizationStatus: string;
+  authorizationStatus: AuthorizationStatus;
   loadingStatus: boolean;
 }
 
