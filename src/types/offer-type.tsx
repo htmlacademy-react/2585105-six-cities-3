@@ -23,7 +23,7 @@ export type OfferType = {
   goods: string[];
   host: Host;
   id: number;
-  image: string[];
+  images: string[];
   isFavorite: boolean;
   isPremium: boolean;
   location: Location;

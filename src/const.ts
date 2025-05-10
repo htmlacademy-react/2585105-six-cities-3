@@ -11,6 +11,14 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export enum APIRoute {
+  Offers = '/offers',
+  Favorite = '/favorite',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}
+
 export const CITY_LOCATIONS = [
   'Paris',
   'Cologne',

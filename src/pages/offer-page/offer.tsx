@@ -25,7 +25,7 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
     return null;
   }
 
-  const [{ image, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = currentOffer;
+  const [{ images, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = currentOffer;
 
   return (
     <div className="page">
@@ -37,7 +37,7 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {image.slice(0, 6).map((item) => (
+              {images.slice(0, 6).map((item) => (
                 <div className="offer__image-wrapper" key={item}>
                   <img
                     className="offer__image"

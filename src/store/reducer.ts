@@ -1,23 +1,26 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, changeSorting, updateOffers } from './action';
+import { changeCity, changeSorting, loadOffers, requireAuthorization, serOfferDataLoadingStatus, updateOffers } from './action';
 import { OfferType } from '../types/offer-type';
-import offers from '../mocks/offers';
 import { CommentType } from '../types/review-type';
 import { reviews } from '../mocks/reviews';
-import { SortBy } from '../const';
+import { AuthorizationStatus, SortBy } from '../const';
 
 type initialState = {
   selectedCity: string;
   offers: OfferType[];
   reviews: CommentType[];
   activeSort: string;
+  authorizationStatus: AuthorizationStatus;
+  loadingStatus: boolean;
 }
 
 export const initialState: initialState = {
   selectedCity: 'Paris',
-  offers,
+  offers: [],
   reviews,
-  activeSort: SortBy.Popular
+  activeSort: SortBy.Popular,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  loadingStatus: false
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -30,5 +33,14 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSorting, (state, action) => {
       state.activeSort = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(serOfferDataLoadingStatus, (state, action) => {
+      state.loadingStatus = action.payload;
     });
 });

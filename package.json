@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
+    "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx",
     "preview": "vite preview",
@@ -44,6 +45,7 @@
     "faker": "5.5.3",
     "jsdom": "22.1.0",
     "react": "18.2.0",
+    "sass": "^1.87.0",
     "typescript": "5.2.2",
     "vite": "4.4.11",
     "vitest": "0.34.6"
