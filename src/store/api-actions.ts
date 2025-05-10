@@ -21,8 +21,8 @@ export const fetchOffersAction = createAsyncThunk<
       const { data } = await api.get<OfferType[]>(APIRoute.Offers);
       dispatch(loadOffers(data));
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Ошибка загрузки предложений:', error);
-
     } finally {
       dispatch(serOfferDataLoadingStatus(false));
     }
