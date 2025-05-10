@@ -5,23 +5,40 @@ import { OfferType } from '../types/offer-type';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { loadOffers, requireAuthorization, serOfferDataLoadingStatus } from './action';
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>('fetchOffers',
+export const fetchOffersAction = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'fetchOffers',
   async (_arg, { dispatch, extra: api }) => {
-    dispatch(serOfferDataLoadingStatus(true));
-    const { data } = await api.get<OfferType[]>(APIRoute.Offers);
-    dispatch(serOfferDataLoadingStatus(false));
-    dispatch(loadOffers(data));
-  });
+    try {
+      dispatch(serOfferDataLoadingStatus(true));
+      const { data } = await api.get<OfferType[]>(APIRoute.Offers);
+      dispatch(loadOffers(data));
+    } catch (error) {
+      console.error('Ошибка загрузки предложений:', error);
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>('checkAuth',
+    } finally {
+      dispatch(serOfferDataLoadingStatus(false));
+    }
+  }
+);
+
+export const checkAuthAction = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'checkAuth',
   async (_arg, { dispatch, extra: api }) => {
     try {
       await api.get(APIRoute.Login);
