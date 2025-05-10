@@ -2,72 +2,60 @@ import './loader.css';
 
 export default function Loader() {
   return (
-    <>
-      <div className='loader loader1'>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="block">
+      <h1>Loading</h1>
 
-      <div className='loader loader2'>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p className="circle">
+        <span className="ouro">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
 
-      <div className='loader loader3'>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <span className="ouro ouro2">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
 
-      <div className='loader loader4'>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div>
-                    <div>
-                      <div>
-                        <div>
-                          <div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+        <span className="ouro ouro3">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+      </p>
+
+      <p className="round">
+        <span className="ouro">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+
+        <span className="ouro ouro2">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+
+        <span className="ouro ouro3">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+      </p>
+
+      <p className="double">
+        <span className="ouro">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+
+        <span className="ouro ouro2">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+
+        <span className="ouro ouro3">
+          <span className="left"><span className="anim"></span></span>
+          <span className="right"><span className="anim"></span></span>
+        </span>
+      </p>
+    </div>
 
   );
 }

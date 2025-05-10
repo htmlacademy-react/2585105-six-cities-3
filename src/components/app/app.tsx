@@ -1,4 +1,4 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import FavoritesPage from '../../pages/favorites-page/favorites';
 import Login from '../../pages/login-page/login';
 import MainScreen from '../../pages/main-page/main';
@@ -8,9 +8,7 @@ import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../store/hooks';
-
-const authStatus = AuthorizationStatus.NotAuth;
-
+import Loader from '../loader/loader';
 
 const defaultCity = {
   location: {
@@ -25,10 +23,18 @@ function App(): JSX.Element {
   const offersAll = useAppSelector((state) => state.offers);
   const checkedCityName = useAppSelector((state) => state.selectedCity);
   const reviews = useAppSelector((state) => state.reviews);
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const isDataLoading = useAppSelector((state) => state.loadingStatus);
 
   const filteredOffers = offersAll.filter((item) => (
     checkedCityName === item.city?.name
   ));
+
+  if (isDataLoading) {
+    return (
+      <Loader />
+    );
+  }
 
   return (
     <HelmetProvider>

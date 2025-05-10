@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, changeSorting, loadOffers, requireAuthorization, updateOffers } from './action';
+import { changeCity, changeSorting, loadOffers, requireAuthorization, serOfferDataLoadingStatus, updateOffers } from './action';
 import { OfferType } from '../types/offer-type';
 import { CommentType } from '../types/review-type';
 import { reviews } from '../mocks/reviews';
@@ -11,6 +11,7 @@ type initialState = {
   reviews: CommentType[];
   activeSort: string;
   authorizationStatus: string;
+  loadingStatus: boolean;
 }
 
 export const initialState: initialState = {
@@ -18,7 +19,8 @@ export const initialState: initialState = {
   offers: [],
   reviews,
   activeSort: SortBy.Popular,
-  authorizationStatus: AuthorizationStatus.Unknown
+  authorizationStatus: AuthorizationStatus.Unknown,
+  loadingStatus: false
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -37,5 +39,8 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(serOfferDataLoadingStatus, (state, action) => {
+      state.loadingStatus = action.payload;
     });
 });

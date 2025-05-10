@@ -7,3 +7,4 @@ export const updateOffers = createAction<OfferType[]>('updateOffers');
 export const changeSorting = createAction<string>('changeSorting');
 export const loadOffers = createAction<OfferType[]>('loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
+export const serOfferDataLoadingStatus = createAction<boolean>('serOfferDataLoadingStatus');
