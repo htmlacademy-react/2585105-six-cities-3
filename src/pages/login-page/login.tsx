@@ -1,7 +1,30 @@
 import { Helmet } from 'react-helmet-async';
 import Logo from '../../components/logo/logo';
+import { FormEvent, useRef } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { loginAction } from '../../store/api-actions';
+import { AuthData } from '../../types/auth-data';
 
 function Login(): JSX.Element {
+  const loginRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (authData: AuthData) => {
+    dispatch(loginAction(authData));
+  };
+
+  const handleSubmitAuth = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      onSubmit({
+        login: loginRef.current.value,
+        password: passwordRef.current.value
+      });
+    }
+  };
+
   return (
     <div className="page page--gray page--login">
       <Helmet>
@@ -20,7 +43,7 @@ function Login(): JSX.Element {
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
-            <form className="login__form form" action="#" method="post">
+            <form className="login__form form" action="#" method="post" onSubmit={handleSubmitAuth}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -29,6 +52,7 @@ function Login(): JSX.Element {
                   name="email"
                   placeholder="Email"
                   required
+                  ref={loginRef}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -39,6 +63,7 @@ function Login(): JSX.Element {
                   name="password"
                   placeholder="Password"
                   required
+                  ref={passwordRef}
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">
