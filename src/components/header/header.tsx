@@ -1,6 +1,12 @@
+import { AuthorizationStatus } from '../../const';
+import { useAppSelector } from '../../store/hooks';
+import AuthUser from '../auth-user/auth-user';
 import Logo from '../logo/logo';
+import NoAuthUser from '../no-auth-user/no-auth-user';
 
 export default function Header() {
+  const authStatus = useAppSelector((state) => state.authorizationStatus);
+
   return (
     <header className="header">
       <div className="container">
@@ -9,25 +15,7 @@ export default function Header() {
             <Logo />
           </div>
           <nav className="header__nav">
-            <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <a
-                  className="header__nav-link header__nav-link--profile"
-                  href="#"
-                >
-                  <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                  <span className="header__user-name user__name">
-                    Oliver.conner@gmail.com
-                  </span>
-                  <span className="header__favorite-count">3</span>
-                </a>
-              </li>
-              <li className="header__nav-item">
-                <a className="header__nav-link" href="#">
-                  <span className="header__signout">Sign out</span>
-                </a>
-              </li>
-            </ul>
+            {authStatus === AuthorizationStatus.Auth as string ? <AuthUser /> : <NoAuthUser />}
           </nav>
         </div>
       </div>

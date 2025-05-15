@@ -1,0 +1,7 @@
+.error-message {
+  color: crimson;
+  background-color: blueviolet;
+  padding: 10px;
+  top: 50px;
+  border-radius: 5px;
+}

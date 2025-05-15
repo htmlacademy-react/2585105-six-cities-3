@@ -40,3 +40,6 @@ export const RATING_STARS = 5;
 export const URL_MARKER_DEFAULT = 'img/pin-active.svg';
 
 export const URL_MARKER_CURRENT = 'img/pin.svg';
+
+export const TIMEOUT_SET_ERROR = 2000;
+
