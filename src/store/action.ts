@@ -8,5 +8,4 @@ export const changeSorting = createAction<string>('changeSorting');
 export const loadOffers = createAction<OfferType[]>('loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
 export const setOfferDataLoadingStatus = createAction<boolean>('serOfferDataLoadingStatus');
-export const setError = createAction<string | null>('setError');
 export const redirectToRoute = createAction<AppRoute>('redirectToRoute');
