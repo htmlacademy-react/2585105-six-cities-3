@@ -1,31 +1,47 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { CommentType } from '../../types/review-type';
-import { City, OfferType } from '../../types/offer-type';
+import { City } from '../../types/offer-type';
 import { useParams } from 'react-router-dom';
 import { calculateRating } from '../../utils';
 import ReviewForm from '../../components/review-form/review-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import PlaceCard from '../../components/place-card/place-card';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useEffect } from 'react';
+import { fetchNearOffer, fetchOffer, fetchReview } from '../../store/api-actions';
+import { dropOffer } from '../../store/action';
 
+const MAX_OFFER_NEAR = 3;
 
 type OfferScreenType = {
-  propsOffers: OfferType[];
-  propsReview: CommentType[];
   defaultCity: City;
 }
 
-function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
-  const { id } = useParams();
+function Offer({ defaultCity }: OfferScreenType) {
+  const dispatch = useAppDispatch();
+  const offerId = useParams();
+  console.log(offerId.id);
 
-  const currentOffer = propsOffers.filter((item) => item.id.toString() === id);
+  const currentOffer = useAppSelector((state) => state.offer);
+  const offers = useAppSelector((state) => state.offers);
+  const reviews = useAppSelector((state) => state.comments);
+  const nearOffer = useAppSelector((state) => state.nearByOffer);
+  const nearOfferRendering = nearOffer?.slice(0, MAX_OFFER_NEAR);
 
-  if (!currentOffer) {
-    return null;
-  }
+  useEffect(() => {
+    if (offerId.id) {
+      dispatch(fetchOffer(offerId.id));
+      dispatch(fetchNearOffer(offerId.id));
+      dispatch(fetchReview(offerId.id));
+    }
 
-  const [{ images, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city }] = currentOffer;
+    return () => {
+      dispatch(dropOffer());
+    };
+  }, [offerId, dispatch]);
+
+  //const {images, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city} = currentOffer;
 
   return (
     <div className="page">
@@ -37,7 +53,7 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images.slice(0, 6).map((item) => (
+              {currentOffer?.images.slice(0, 6).map((item) => (
                 <div className="offer__image-wrapper" key={item}>
                   <img
                     className="offer__image"
@@ -50,13 +66,13 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {isPremium && <div className="offer__mark"><span>Premium</span></div>}
+              {currentOffer?.isPremium && <div className="offer__mark"><span>Premium</span></div>}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {title}
+                  {currentOffer?.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
-                  <svg className={`offer__bookmark-icon ${isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
+                  <svg className={`offer__bookmark-icon ${currentOffer?.isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -64,28 +80,28 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: calculateRating(rating) }} />
+                  <span style={{ width: calculateRating(currentOffer?.rating as number) }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{type}</li>
+                <li className="offer__feature offer__feature--entire">{currentOffer?.type}</li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms} Bedrooms
+                  {currentOffer?.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} {maxAdults > 1 ? 'adults' : 'adult'}
+                  Max {currentOffer?.maxAdults} {currentOffer?.maxAdults as number > 1 ? 'adults' : 'adult'}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">€{price}</b>
+                <b className="offer__price-value">€{currentOffer?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What`s inside</h2>
                 <ul className="offer__inside-list">
-                  {goods.map((good) => <li className="offer__inside-item" key={good}>{good}</li>)}
+                  {currentOffer?.goods.map((good) => <li className="offer__inside-item" key={good}>{good}</li>)}
                 </ul>
               </div>
               <div className="offer__host">
@@ -94,29 +110,29 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={host.avatarUrl}
+                      src={currentOffer?.host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">{host.name}</span>
-                  <span className="offer__user-status">{host.isPro ? 'Pro' : ''}</span>
+                  <span className="offer__user-name">{currentOffer?.host.name}</span>
+                  <span className="offer__user-status">{currentOffer?.host.isPro ? 'Pro' : ''}</span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {description}
+                    {currentOffer?.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 <ReviewForm />
-                <Reviews reviewsProp={propsReview} />
+                <Reviews reviewsProp={reviews} />
               </section>
 
             </div>
           </div>
-          <Map city={city || defaultCity} offers={propsOffers} blockMap={'offer'} />
+          <Map city={currentOffer?.city || defaultCity} offers={offers} blockMap={'offer'} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -124,13 +140,13 @@ function Offer({ propsOffers, propsReview, defaultCity }: OfferScreenType) {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {propsOffers.map((offer) => (
+              {nearOfferRendering ? nearOfferRendering.map((offer) => (
                 <PlaceCard
                   key={offer.id}
                   offer={{ ...offer }}
                   block='near-places'
                 />
-              ))}
+              )) : ''}
             </div>
           </section>
         </div>

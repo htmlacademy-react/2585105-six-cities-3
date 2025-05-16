@@ -3,10 +3,11 @@ import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
 import { OfferType } from '../types/offer-type';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { loadOffers, redirectToRoute, requireAuthorization, setOfferDataLoadingStatus } from './action';
+import { loadComments, loadNearOffer, loadOffer, loadOffers, redirectToRoute, requireAuthorization, setOfferDataLoadingStatus } from './action';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
+import { CommentType } from '../types/review-type';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -76,3 +77,37 @@ export const logoutAction = createAsyncThunk<void, undefined, {
       user: null
     }));
   });
+
+export const fetchOffer = createAsyncThunk<OfferType, OfferType['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('fetchOffer',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.get<OfferType>(`${APIRoute.Offers}/${offerId}`);
+    console.log({ data });
+    return data;
+  }
+);
+
+export const fetchNearOffer = createAsyncThunk<void, OfferType['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('fetchNearOffer',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<OfferType[]>(`${APIRoute.Offers}/${offerId}/nearby`);
+    dispatch(loadNearOffer(data));
+  }
+);
+
+export const fetchReview = createAsyncThunk<void, OfferType['id'], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>('fetchReview',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<CommentType[]>(`${APIRoute.Comments}/${offerId}`);
+    dispatch(loadComments(data));
+  }
+);
