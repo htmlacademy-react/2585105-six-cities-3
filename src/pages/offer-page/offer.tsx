@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
 import { fetchNearOffer, fetchOffer, fetchReview } from '../../store/api-actions';
 import { dropOffer } from '../../store/action';
+import { AuthorizationStatus } from '../../const';
 
 const MAX_OFFER_NEAR = 3;
 
@@ -21,14 +22,15 @@ type OfferScreenType = {
 function Offer({ defaultCity }: OfferScreenType) {
   const dispatch = useAppDispatch();
   const offerId = useParams();
-  console.log(offerId.id);
 
   const currentOffer = useAppSelector((state) => state.offer);
   const offers = useAppSelector((state) => state.offers);
   const reviews = useAppSelector((state) => state.comments);
   const nearOffer = useAppSelector((state) => state.nearByOffer);
+  const authUser = useAppSelector((state) => state.authorizationStatus);
   const nearOfferRendering = nearOffer?.slice(0, MAX_OFFER_NEAR);
 
+  //console.log(reviews);
   useEffect(() => {
     if (offerId.id) {
       dispatch(fetchOffer(offerId.id));
@@ -126,7 +128,7 @@ function Offer({ defaultCity }: OfferScreenType) {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <ReviewForm />
+                {authUser === AuthorizationStatus.Auth as string ? <ReviewForm idComment={offerId.id} /> : ''}
                 <Reviews reviewsProp={reviews} />
               </section>
 

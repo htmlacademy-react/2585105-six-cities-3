@@ -1,24 +1,51 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { fetchReview, sendFormComment } from '../../store/api-actions';
 
 const MIN_LENGTH_COMMENT = 50;
 const MAX_LENGTH_COMMENT = 300;
 
-export default function ReviewForm() {
-  const [text, setText] = useState('');
-  const [rating, setRating] = useState('');
+type ReviewForm = {
+  idComment: string | undefined;
+}
+
+export default function ReviewForm({ idComment }: ReviewForm) {
+  const dispatch = useAppDispatch();
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const ratingRef = useRef<HTMLInputElement>(null);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+
+  const commentDataSend = {
+    idComment,
+    comment,
+    rating
+  };
 
   function handleCHangeText(evt: ChangeEvent<HTMLTextAreaElement>) {
-    setText(evt.target.value);
+    setComment(evt.target.value);
   }
 
-  function handleChangeRating(e: ChangeEvent<HTMLInputElement>) {
-    setRating(e.target.value);
+  function handleChangeRating(evt: ChangeEvent<HTMLInputElement>) {
+    setRating(+evt.target.value);
   }
 
-  const isValid = text.length > MIN_LENGTH_COMMENT && text.length < MAX_LENGTH_COMMENT && rating !== '';
+  function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+    dispatch(sendFormComment(commentDataSend)).unwrap().then(() => {
+      setComment('');
+      setRating(0);
+    });
+    dispatch(fetchReview(idComment as string));
+    setComment(comment);
+    setRating(rating);
+  }
+
+  const isValid = comment.length > MIN_LENGTH_COMMENT && comment.length < MAX_LENGTH_COMMENT && rating !== 0;
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -32,9 +59,10 @@ export default function ReviewForm() {
               id={`${item}-stars`}
               type="radio"
               onChange={handleChangeRating}
+              ref={ratingRef}
             />
             <label
-              htmlFor="5-stars"
+              htmlFor={`${item}-stars`}
               className="reviews__rating-label form__rating-label"
               title="perfect"
             >
@@ -50,8 +78,9 @@ export default function ReviewForm() {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={text}
+        value={comment}
         onChange={handleCHangeText}
+        ref={commentRef}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -64,9 +93,6 @@ export default function ReviewForm() {
           className="reviews__submit form__submit button"
           type="submit"
           disabled={!isValid}
-          onSubmit={(evt) => {
-            evt.preventDefault();
-          }}
         >
           Submit
         </button>

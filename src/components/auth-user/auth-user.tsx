@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 export default function AuthUser() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-  const countFavorites = useAppSelector((state) => state.countFavoritesOffer);
+  const favoriteCounts = useAppSelector((state) => state.countFavoritesOffer);
 
   const logOutHandle = () => {
     dispatch(logoutAction());
@@ -21,7 +21,7 @@ export default function AuthUser() {
           <span className="header__user-name user__name">
             {user?.email}
           </span>
-          <span className="header__favorite-count">{countFavorites}</span>
+          <span className="header__favorite-count">{favoriteCounts}</span>
         </a>
       </li>
       <li className="header__nav-item">

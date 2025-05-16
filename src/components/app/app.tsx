@@ -26,7 +26,7 @@ const defaultCity = {
   name: 'Amsterdam'
 };
 
-function App(): JSX.Element {
+function App() {
   const offersAll = useAppSelector((state) => state.offers);
   const checkedCityName = useAppSelector((state) => state.selectedCity);
   const authStatus = useAppSelector((state) => state.authorizationStatus);
