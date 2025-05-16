@@ -4,6 +4,7 @@ import { OfferType } from '../types/offer-type';
 import { CommentType } from '../types/review-type';
 import { reviews } from '../mocks/reviews';
 import { AuthorizationStatus, SortBy } from '../const';
+import { UserData } from '../types/user-data';
 
 type initialState = {
   selectedCity: string;
@@ -12,6 +13,8 @@ type initialState = {
   activeSort: string;
   authorizationStatus: string;
   loadingStatus: boolean;
+  user: UserData | null;
+  countFavoritesOffer: number;
 }
 
 export const initialState: initialState = {
@@ -21,6 +24,8 @@ export const initialState: initialState = {
   activeSort: SortBy.Popular,
   authorizationStatus: AuthorizationStatus.Unknown,
   loadingStatus: false,
+  user: null,
+  countFavoritesOffer: 0
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -38,7 +43,8 @@ export const reducer = createReducer(initialState, (builder) => {
       state.offers = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
+      state.authorizationStatus = action.payload.status;
+      state.user = action.payload.user;
     })
     .addCase(setOfferDataLoadingStatus, (state, action) => {
       state.loadingStatus = action.payload;

@@ -28,9 +28,15 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   async (_arg, { dispatch, extra: api }) => {
     try {
       await api.get(APIRoute.Login);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(requireAuthorization({
+        status: AuthorizationStatus.Auth,
+        user: null,
+      }));
     } catch {
-      dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
+      dispatch(requireAuthorization({
+        status: AuthorizationStatus.NotAuth,
+        user: null,
+      }));
     }
   }
 );
@@ -42,9 +48,13 @@ export const loginAction = createAsyncThunk<{ success: boolean }, AuthData, {
 }>('login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
     try {
-      const { data: { token } } = await api.post<UserData>(APIRoute.Login, { email, password });
+      const { data: UserInfo } = await api.post<UserData>(APIRoute.Login, { email, password });
+      const { token } = UserInfo;
       saveToken(token);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(requireAuthorization({
+        status: AuthorizationStatus.Auth,
+        user: UserInfo
+      }));
       dispatch(redirectToRoute(AppRoute.Main));
       return { success: true, token };
     } catch {
@@ -61,5 +71,8 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, { dispatch, extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
+    dispatch(requireAuthorization({
+      status: AuthorizationStatus.NotAuth,
+      user: null
+    }));
   });
