@@ -15,7 +15,7 @@ export default function Header() {
             <Logo />
           </div>
           <nav className="header__nav">
-            {authStatus === AuthorizationStatus.Auth as string ? <AuthUser /> : <NoAuthUser />}
+            {authStatus === AuthorizationStatus.Auth ? <AuthUser /> : <NoAuthUser />}
           </nav>
         </div>
       </div>

@@ -1,86 +1,39 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
-import FavoritesPage from '../../pages/favorites-page/favorites';
-import Login from '../../pages/login-page/login';
-import MainScreen from '../../pages/main-page/main';
-import { Route, Routes } from 'react-router-dom';
-import Offer from '../../pages/offer-page/offer';
-import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
-import PrivateRoute from '../private-route/private-route';
-import { HelmetProvider } from 'react-helmet-async';
-import { useAppSelector } from '../../store/hooks';
-import Loader from '../loader/loader';
-import HistoryRoute from '../history-route/history-route';
-import { browserHistory } from '../../browser-history';
+import { logoutAction } from '../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-const defaultCity = {
-  location: {
-    latitude: 52.23,
-    longitude: 4.54,
-    zoom: 10
-  },
-  name: 'Amsterdam'
-};
+export default function AuthUser() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+  const favoriteCounts = useAppSelector((state) => state.countFavoritesOffer);
 
-function App(): JSX.Element {
-  const offersAll = useAppSelector((state) => state.offers);
-  const checkedCityName = useAppSelector((state) => state.selectedCity);
-  const reviews = useAppSelector((state) => state.reviews);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const isDataLoading = useAppSelector((state) => state.loadingStatus);
-
-  const filteredOffers = offersAll.filter((item) => (
-    checkedCityName === item.city?.name
-  ));
-
-  if (isDataLoading) {
-    return (
-      <Loader />
-    );
-  }
+  const logOutHandle = () => {
+    dispatch(logoutAction());
+  };
 
   return (
-    <HelmetProvider>
-      <HistoryRoute history={browserHistory}>
-        <Routes>
-          <Route
-            path={AppRoute.Main}
-            element={
-              <MainScreen
-                defaultCity={defaultCity}
-                offers={filteredOffers}
-              />
-            }
-          />
-          <Route
-            path={AppRoute.Favorites}
-            element={
-              <PrivateRoute
-                requiredAuthorizationStatus={AuthorizationStatus.Auth}
-                authorizationStatus={authStatus}
-              >
-                <FavoritesPage propsOffers={offersAll} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoute.Login}
-            element={<Login />}
-          />
-          <Route
-            path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={reviews} defaultCity={defaultCity} />}
-          />
-          <Route
-            path='*'
-            element={<NotFoundPage />}
-          />
-        </Routes>
-
-      </HistoryRoute>
-    </HelmetProvider>
-
-
+    <ul className="header__nav-list">
+      <li className="header__nav-item user">
+        <a
+          className="header__nav-link header__nav-link--profile"
+          href="#"
+        >
+          <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+          <span className="header__user-name user__name">
+            {user?.email}
+          </span>
+          <span className="header__favorite-count">{favoriteCounts}</span>
+        </a>
+      </li>
+      <li className="header__nav-item">
+        <a className="header__nav-link" href="#"
+          onClick={(evt) => {
+            evt.preventDefault();
+            logOutHandle();
+          }}
+        >
+          <span className="header__signout">Sign out</span>
+        </a>
+      </li>
+    </ul>
   );
 }
-
-export default App;
