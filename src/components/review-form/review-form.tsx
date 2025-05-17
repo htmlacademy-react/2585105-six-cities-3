@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { fetchReview, sendFormComment } from '../../store/api-actions';
 
@@ -14,15 +14,6 @@ export default function ReviewForm({ idComment }: ReviewForm) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  const ratingRef = useRef<HTMLInputElement>(null);
-  const commentRef = useRef<HTMLTextAreaElement>(null);
-
-  const commentDataSend = {
-    idComment,
-    comment,
-    rating
-  };
-
   function handleCHangeText(evt: ChangeEvent<HTMLTextAreaElement>) {
     setComment(evt.target.value);
   }
@@ -33,13 +24,14 @@ export default function ReviewForm({ idComment }: ReviewForm) {
 
   function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    dispatch(sendFormComment(commentDataSend)).unwrap().then(() => {
-      setComment('');
-      setRating(0);
-    });
+    dispatch(sendFormComment({
+      idComment,
+      comment,
+      rating
+    }));
     dispatch(fetchReview(idComment as string));
-    setComment(comment);
-    setRating(rating);
+    setComment('');
+    setRating(0);
   }
 
   const isValid = comment.length > MIN_LENGTH_COMMENT && comment.length < MAX_LENGTH_COMMENT && rating !== 0;
@@ -55,16 +47,15 @@ export default function ReviewForm({ idComment }: ReviewForm) {
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              defaultValue={item}
+              value={item.toString()}
               id={`${item}-stars`}
               type="radio"
               onChange={handleChangeRating}
-              ref={ratingRef}
             />
             <label
               htmlFor={`${item}-stars`}
               className="reviews__rating-label form__rating-label"
-              title="perfect"
+              title='perfect'
             >
               <svg className="form__star-image" width={37} height={33}>
                 <use xlinkHref="#icon-star" />
@@ -80,7 +71,6 @@ export default function ReviewForm({ idComment }: ReviewForm) {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={comment}
         onChange={handleCHangeText}
-        ref={commentRef}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

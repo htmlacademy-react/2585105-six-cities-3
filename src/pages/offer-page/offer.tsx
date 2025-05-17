@@ -82,8 +82,11 @@ function Offer({ defaultCity }: OfferScreenType) {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: calculateRating(currentOffer?.rating as number) }} />
-                  <span className="visually-hidden">Rating</span>
+                  {currentOffer &&
+                    <>
+                      <span style={{ width: calculateRating(currentOffer.rating) }} />
+                      <span className="visually-hidden">Rating</span>
+                    </>}
                 </div>
                 <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
               </div>
@@ -128,7 +131,7 @@ function Offer({ defaultCity }: OfferScreenType) {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                {authUser === AuthorizationStatus.Auth as string ? <ReviewForm idComment={offerId.id} /> : ''}
+                {authUser === AuthorizationStatus.Auth ? <ReviewForm idComment={offerId.id} /> : ''}
                 <Reviews reviewsProp={reviews} />
               </section>
 

@@ -11,7 +11,7 @@ type initialState = {
   selectedCity: string;
   offers: OfferType[];
   activeSort: string;
-  authorizationStatus: string;
+  authorizationStatus: AuthorizationStatus;
   loadingStatus: boolean;
   user: UserData | null;
   countFavoritesOffer: number;
@@ -50,7 +50,7 @@ export const reducer = createReducer(initialState, (builder) => {
       state.offers = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload.status;
+      state.authorizationStatus = action.payload.status as AuthorizationStatus;
       state.user = action.payload.user;
     })
     .addCase(setOfferDataLoadingStatus, (state, action) => {
