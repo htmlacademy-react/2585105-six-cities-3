@@ -11,6 +11,11 @@ import { useAppSelector } from '../../store/hooks';
 import Loader from '../loader/loader';
 import HistoryRoute from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
+import { store } from '../../store';
+import { checkAuthAction, fetchOffersAction } from '../../store/api-actions';
+
+store.dispatch(fetchOffersAction());
+store.dispatch(checkAuthAction());
 
 const defaultCity = {
   location: {
@@ -21,10 +26,9 @@ const defaultCity = {
   name: 'Amsterdam'
 };
 
-function App(): JSX.Element {
+function App() {
   const offersAll = useAppSelector((state) => state.offers);
   const checkedCityName = useAppSelector((state) => state.selectedCity);
-  const reviews = useAppSelector((state) => state.reviews);
   const authStatus = useAppSelector((state) => state.authorizationStatus);
   const isDataLoading = useAppSelector((state) => state.loadingStatus);
 
@@ -68,7 +72,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer propsOffers={filteredOffers} propsReview={reviews} defaultCity={defaultCity} />}
+            element={<Offer defaultCity={defaultCity} />}
           />
           <Route
             path='*'

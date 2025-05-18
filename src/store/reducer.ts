@@ -1,26 +1,38 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, changeSorting, loadOffers, requireAuthorization, setOfferDataLoadingStatus, updateOffers } from './action';
+import { addComment, changeCity, changeSorting, dropOffer, loadNearOffer, loadOffers, requireAuthorization, setOfferDataLoadingStatus, updateOffers } from './action';
 import { OfferType } from '../types/offer-type';
 import { CommentType } from '../types/review-type';
-import { reviews } from '../mocks/reviews';
 import { AuthorizationStatus, SortBy } from '../const';
+import { UserData } from '../types/user-data';
+import { fetchOffer, fetchReview } from './api-actions';
+import { CommentData } from '../types/comment-data';
 
 type initialState = {
   selectedCity: string;
   offers: OfferType[];
-  reviews: CommentType[];
   activeSort: string;
-  authorizationStatus: string;
+  authorizationStatus: AuthorizationStatus;
   loadingStatus: boolean;
+  user: UserData | null;
+  countFavoritesOffer: number;
+  offer: OfferType | null;
+  nearByOffer: OfferType[] | null;
+  comments: CommentType[] | null;
+  comment: CommentData | null;
 }
 
 export const initialState: initialState = {
   selectedCity: 'Paris',
   offers: [],
-  reviews,
   activeSort: SortBy.Popular,
   authorizationStatus: AuthorizationStatus.Unknown,
   loadingStatus: false,
+  user: null,
+  countFavoritesOffer: 0,
+  offer: null,
+  nearByOffer: null,
+  comments: null,
+  comment: null
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -38,9 +50,27 @@ export const reducer = createReducer(initialState, (builder) => {
       state.offers = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
+      state.authorizationStatus = action.payload.status as AuthorizationStatus;
+      state.user = action.payload.user;
     })
     .addCase(setOfferDataLoadingStatus, (state, action) => {
       state.loadingStatus = action.payload;
+    })
+    .addCase(fetchOffer.fulfilled, (state, action) => {
+      state.offer = action.payload;
+    })
+    .addCase(loadNearOffer, (state, action) => {
+      state.nearByOffer = action.payload;
+    })
+    .addCase(fetchReview.fulfilled, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(dropOffer, (state) => {
+      state.comments = null;
+      state.offer = null;
+      state.nearByOffer = null;
+    })
+    .addCase(addComment, (state, action) => {
+      state.comment = action.payload;
     });
 });

@@ -20,7 +20,7 @@ function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
   const city = offers.find((item) => item.city?.name === checkedCityName)?.city;
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
 
-  function handleOfferSelected(offerId: number) {
+  function handleOfferSelected(offerId: string) {
     const currentOffer = offers.find((offer) => offer.id === offerId) || null;
     setSelectedOffer(currentOffer);
   }
