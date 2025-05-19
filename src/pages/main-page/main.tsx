@@ -7,7 +7,8 @@ import ListCities from '../../components/list-cities/list-cities';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import Sorting from '../../components/sorting/sorting';
-import { changeSorting } from '../../store/action';
+import { changeSorting } from '../../store/data-process/data-process';
+
 
 type PlacesProps = {
   defaultCity: City;
@@ -16,7 +17,7 @@ type PlacesProps = {
 
 function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const checkedCityName = useAppSelector((state) => state.selectedCity);
+  const checkedCityName = useAppSelector((state) => state.DATA.selectedCity);
   const city = offers.find((item) => item.city?.name === checkedCityName)?.city;
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
 

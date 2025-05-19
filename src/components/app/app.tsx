@@ -27,10 +27,10 @@ const defaultCity = {
 };
 
 function App() {
-  const offersAll = useAppSelector((state) => state.offers);
-  const checkedCityName = useAppSelector((state) => state.selectedCity);
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
-  const isDataLoading = useAppSelector((state) => state.loadingStatus);
+  const offersAll = useAppSelector((state) => state.DATA.offers);
+  const checkedCityName = useAppSelector((state) => state.DATA.selectedCity);
+  const authStatus = useAppSelector((state) => state.USER.authorizationStatus);
+  const isDataLoading = useAppSelector((state) => state.DATA.loadingStatus);
 
   const filteredOffers = offersAll.filter((item) => (
     checkedCityName === item.city?.name

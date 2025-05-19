@@ -1,50 +1,61 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import { City } from '../../types/offer-type';
+import { City, OfferType } from '../../types/offer-type';
 import { useParams } from 'react-router-dom';
 import { calculateRating } from '../../utils';
 import ReviewForm from '../../components/review-form/review-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import PlaceCard from '../../components/place-card/place-card';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useEffect } from 'react';
-import { fetchNearOffer, fetchOffer, fetchReview } from '../../store/api-actions';
-import { dropOffer } from '../../store/action';
+import { useAppSelector } from '../../store/hooks';
+import { useEffect, useState } from 'react';
+import { fetchOfferById } from '../../store/api-actions';
 import { AuthorizationStatus } from '../../const';
-
-const MAX_OFFER_NEAR = 3;
+import { CommentType } from '../../types/review-type';
+import { AxiosError } from 'axios';
+import NotFoundPage from '../not-found-pages/not-found-pages';
 
 type OfferScreenType = {
   defaultCity: City;
 }
 
+type CurrentOfferType = {
+  offer: OfferType;
+  nearOffers: OfferType[];
+  reviews: CommentType[];
+};
+
 function Offer({ defaultCity }: OfferScreenType) {
-  const dispatch = useAppDispatch();
   const offerId = useParams();
 
-  const currentOffer = useAppSelector((state) => state.offer);
-  const offers = useAppSelector((state) => state.offers);
-  const reviews = useAppSelector((state) => state.comments);
-  const nearOffer = useAppSelector((state) => state.nearByOffer);
-  const authUser = useAppSelector((state) => state.authorizationStatus);
-  const nearOfferRendering = nearOffer?.slice(0, MAX_OFFER_NEAR);
+  const offers = useAppSelector((state) => state.DATA.offers);
+  const authUser = useAppSelector((state) => state.USER.authorizationStatus);
 
-  //console.log(reviews);
+  const [currentOffer, setCurrentOffer] = useState<CurrentOfferType | null>(null);
+  const [isNotFound, setIsNotFound] = useState(false);
+
   useEffect(() => {
     if (offerId.id) {
-      dispatch(fetchOffer(offerId.id));
-      dispatch(fetchNearOffer(offerId.id));
-      dispatch(fetchReview(offerId.id));
+      fetchOfferById(offerId.id).then((offerCurrent: CurrentOfferType | null) => {
+        if (offerCurrent) {
+          setCurrentOffer(offerCurrent);
+        }
+      }).catch((response: AxiosError<{ message: string }>) => {
+        if (response.response?.status === 404) {
+          setIsNotFound(true);
+        }
+      });
     }
-
     return () => {
-      dispatch(dropOffer());
+      setCurrentOffer(null);
     };
-  }, [offerId, dispatch]);
+  }, [offerId]);
 
-  //const {images, isPremium, title, isFavorite, rating, type, bedrooms, maxAdults, price, goods, host, description, city} = currentOffer;
-
+  if (isNotFound) {
+    return (
+      <NotFoundPage />
+    );
+  }
   return (
     <div className="page">
       <Helmet>
@@ -55,7 +66,7 @@ function Offer({ defaultCity }: OfferScreenType) {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer?.images.slice(0, 6).map((item) => (
+              {currentOffer?.offer.images.slice(0, 6).map((item) => (
                 <div className="offer__image-wrapper" key={item}>
                   <img
                     className="offer__image"
@@ -68,13 +79,13 @@ function Offer({ defaultCity }: OfferScreenType) {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOffer?.isPremium && <div className="offer__mark"><span>Premium</span></div>}
+              {currentOffer?.offer.isPremium && <div className="offer__mark"><span>Premium</span></div>}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {currentOffer?.title}
+                  {currentOffer?.offer.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
-                  <svg className={`offer__bookmark-icon ${currentOffer?.isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
+                  <svg className={`offer__bookmark-icon ${currentOffer?.offer.isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -84,29 +95,29 @@ function Offer({ defaultCity }: OfferScreenType) {
                 <div className="offer__stars rating__stars">
                   {currentOffer &&
                     <>
-                      <span style={{ width: calculateRating(currentOffer.rating) }} />
+                      <span style={{ width: calculateRating(currentOffer.offer.rating) }} />
                       <span className="visually-hidden">Rating</span>
                     </>}
                 </div>
-                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer?.offer.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{currentOffer?.type}</li>
+                <li className="offer__feature offer__feature--entire">{currentOffer?.offer.type}</li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {currentOffer?.bedrooms} Bedrooms
+                  {currentOffer?.offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {currentOffer?.maxAdults} {currentOffer?.maxAdults as number > 1 ? 'adults' : 'adult'}
+                  Max {currentOffer?.offer.maxAdults} {currentOffer?.offer.maxAdults as number > 1 ? 'adults' : 'adult'}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">€{currentOffer?.price}</b>
+                <b className="offer__price-value">€{currentOffer?.offer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What`s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer?.goods.map((good) => <li className="offer__inside-item" key={good}>{good}</li>)}
+                  {currentOffer?.offer.goods.map((good) => <li className="offer__inside-item" key={good}>{good}</li>)}
                 </ul>
               </div>
               <div className="offer__host">
@@ -115,29 +126,29 @@ function Offer({ defaultCity }: OfferScreenType) {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={currentOffer?.host.avatarUrl}
+                      src={currentOffer?.offer.host.avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">{currentOffer?.host.name}</span>
-                  <span className="offer__user-status">{currentOffer?.host.isPro ? 'Pro' : ''}</span>
+                  <span className="offer__user-name">{currentOffer?.offer.host.name}</span>
+                  <span className="offer__user-status">{currentOffer?.offer.host.isPro ? 'Pro' : ''}</span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {currentOffer?.description}
+                    {currentOffer?.offer.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 {authUser === AuthorizationStatus.Auth ? <ReviewForm idComment={offerId.id} /> : ''}
-                <Reviews reviewsProp={reviews} />
+                <Reviews reviewsProp={currentOffer?.reviews} />
               </section>
 
             </div>
           </div>
-          <Map city={currentOffer?.city || defaultCity} offers={offers} blockMap={'offer'} />
+          <Map city={currentOffer?.offer.city || defaultCity} offers={offers} blockMap={'offer'} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -145,7 +156,7 @@ function Offer({ defaultCity }: OfferScreenType) {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {nearOfferRendering ? nearOfferRendering.map((offer) => (
+              {currentOffer?.nearOffers ? currentOffer?.nearOffers.map((offer) => (
                 <PlaceCard
                   key={offer.id}
                   offer={{ ...offer }}

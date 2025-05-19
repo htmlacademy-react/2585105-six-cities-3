@@ -5,7 +5,7 @@ import Logo from '../logo/logo';
 import NoAuthUser from '../no-auth-user/no-auth-user';
 
 export default function Header() {
-  const authStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus = useAppSelector((state) => state.USER.authorizationStatus);
 
   return (
     <header className="header">

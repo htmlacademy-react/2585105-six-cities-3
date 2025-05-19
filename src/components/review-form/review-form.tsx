@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
-import { fetchReview, sendFormComment } from '../../store/api-actions';
+import { sendFormComment } from '../../store/api-actions';
 
 const MIN_LENGTH_COMMENT = 50;
 const MAX_LENGTH_COMMENT = 300;
@@ -29,7 +29,6 @@ export default function ReviewForm({ idComment }: ReviewForm) {
       comment,
       rating
     }));
-    dispatch(fetchReview(idComment as string));
     setComment('');
     setRating(0);
   }
@@ -47,7 +46,7 @@ export default function ReviewForm({ idComment }: ReviewForm) {
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              value={item.toString()}
+              value={item}
               id={`${item}-stars`}
               type="radio"
               onChange={handleChangeRating}

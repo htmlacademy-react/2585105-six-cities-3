@@ -28,12 +28,19 @@ export const CITY_LOCATIONS = [
   'Dusseldorf',
 ];
 
+export const DEFAULT_CITY = 'Paris';
+
 export const SortBy = {
   Popular: 'Popular',
   PriceDown: 'Price: low to high',
   PriceUp: 'Price: high to low',
   TopRated: 'Top rated first'
 } as const;
+
+export enum NameSpace {
+  Data = 'DATA',
+  User = 'USER'
+}
 
 export const RATING_STARS = 5;
 

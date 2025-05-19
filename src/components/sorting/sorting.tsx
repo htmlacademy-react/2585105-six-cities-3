@@ -8,7 +8,7 @@ type Sorting = {
 }
 
 export default function Sorting({ onChange }: Sorting) {
-  const activeSort = useAppSelector((state) => state.activeSort);
+  const activeSort = useAppSelector((state) => state.DATA.activeSort);
   const [isActiveClass, setActiveClass] = useState(false);
 
   function handleSortMouse() {
