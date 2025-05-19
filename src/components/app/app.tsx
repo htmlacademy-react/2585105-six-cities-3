@@ -32,9 +32,10 @@ function App() {
   const authStatus = useAppSelector((state) => state.USER.authorizationStatus);
   const isDataLoading = useAppSelector((state) => state.DATA.loadingStatus);
 
-  const filteredOffers = offersAll.filter((item) => (
+  const filteredOffers = offersAll.filter((item: any) => (
     checkedCityName === item.city?.name
   ));
+
 
   if (isDataLoading) {
     return (
