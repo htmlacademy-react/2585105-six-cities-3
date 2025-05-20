@@ -13,7 +13,7 @@ export type ListCardsComponents = {
 export default function ListOffers({ propsOffer, onOfferHover, onOfferLeave }: ListCardsComponents) {
 
   const [offerId, setHoverOfferId] = useState<string | null>(null);
-  const activeSort = useAppSelector((state) => state.activeSort);
+  const activeSort = useAppSelector((state) => state.DATA.activeSort);
   const sortOffers = sortingByOption(propsOffer, activeSort);
 
   function handleCardHover(id: string | null) {

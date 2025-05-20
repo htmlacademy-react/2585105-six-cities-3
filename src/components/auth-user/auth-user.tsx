@@ -3,15 +3,15 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function AuthUser() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
-  const favoriteCounts = useAppSelector((state) => state.countFavoritesOffer);
+  const user = useAppSelector((state) => state.USER.userInfo);
+  const favoriteCounts = 0;
 
   const logOutHandle = () => {
     dispatch(logoutAction());
   };
 
   return (
-    <ul className="header__nav-list">
+    <ul className="header__nav-list">ы
       <li className="header__nav-item user">
         <a
           className="header__nav-link header__nav-link--profile"

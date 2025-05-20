@@ -2,7 +2,7 @@ import { CommentType } from '../../types/review-type';
 import { calculateRating, formatDateComment, sortDayComment } from '../../utils';
 
 type ReviewType = {
-  reviewsProp: CommentType[] | null;
+  reviewsProp: CommentType[] | undefined;
 }
 
 export default function Reviews({ reviewsProp }: ReviewType) {
