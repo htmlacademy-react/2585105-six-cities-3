@@ -13,6 +13,7 @@ import HistoryRoute from '../history-route/history-route';
 import { browserHistory } from '../../browser-history';
 import { store } from '../../store';
 import { checkAuthAction, fetchOffersAction } from '../../store/api-actions';
+import { OfferType } from '../../types/offer-type';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
@@ -32,10 +33,9 @@ function App() {
   const authStatus = useAppSelector((state) => state.USER.authorizationStatus);
   const isDataLoading = useAppSelector((state) => state.DATA.loadingStatus);
 
-  const filteredOffers = offersAll.filter((item: any) => (
+  const filteredOffers = offersAll.filter((item: OfferType) => (
     checkedCityName === item.city?.name
   ));
-
 
   if (isDataLoading) {
     return (
