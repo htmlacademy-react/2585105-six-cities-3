@@ -1,6 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { OfferType } from '../../types/offer-type';
 import { calculateRating } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { IsSelectUserAuth } from '../../store/user-process/selectors';
+import { AppRoute } from '../../const';
+import { useState } from 'react';
+import { postfavoriteStatus } from '../../store/api-actions';
+import { setFavoriteStatus } from '../../store/data-process/data-process';
 
 type CardPlace = {
   offer: OfferType;
@@ -14,6 +20,22 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
 
   const { price, isFavorite, type, previewImage, isPremium, title, rating, id } = offer;
   const pathCard = `/offer/${id}`;
+  const dispatch = useAppDispatch();
+  const offerId = offer.id;
+  const [status, setStatus] = useState<boolean>(isFavorite);
+  const isAuthUser = useAppSelector(IsSelectUserAuth);
+  const navigate = useNavigate();
+
+  const handleClickFavorite = () => {
+    if (isAuthUser) {
+      postfavoriteStatus(offerId, !status).then((item: OfferType) => {
+        setStatus(item.isFavorite);
+        dispatch(setFavoriteStatus({ offerId, status: item.isFavorite }));
+      });
+    } else {
+      navigate(AppRoute.Login);
+    }
+  };
 
   return (
     <article className={`${block}__card place-card`} onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
@@ -38,6 +60,7 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
           <button
             className={`place-card__bookmark-button place-card__bookmark-button${isFavorite ? '--active' : ''} button`}
             type="button"
+            onClick={handleClickFavorite}
           >
             <svg
               className="place-card__bookmark-icon"

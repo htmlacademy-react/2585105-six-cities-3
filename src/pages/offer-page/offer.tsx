@@ -19,7 +19,7 @@ type OfferScreenType = {
   defaultCity: City;
 }
 
-type CurrentOfferType = {
+export type CurrentOfferType = {
   offer: OfferType;
   nearOffers: OfferType[];
   reviews: CommentType[];
@@ -33,6 +33,7 @@ function Offer({ defaultCity }: OfferScreenType) {
 
   const [currentOffer, setCurrentOffer] = useState<CurrentOfferType | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
+
 
   useEffect(() => {
     if (offerId.id) {
@@ -142,7 +143,7 @@ function Offer({ defaultCity }: OfferScreenType) {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                {authUser === AuthorizationStatus.Auth ? <ReviewForm idComment={offerId.id} /> : ''}
+                {authUser === AuthorizationStatus.Auth ? <ReviewForm idComment={offerId.id} setCurrentOffer={setCurrentOffer} currentOffer={currentOffer} /> : ''}
                 <Reviews reviewsProp={currentOffer?.reviews} />
               </section>
 

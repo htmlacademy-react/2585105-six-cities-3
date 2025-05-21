@@ -24,6 +24,16 @@ export const dataProcess = createSlice({
     },
     changeSorting(state, action: PayloadAction<string>) {
       state.activeSort = action.payload;
+    },
+    setFavoriteStatus(state, action: PayloadAction<{ offerId: string; status: boolean }>) {
+      const updateOffers: OfferType[] = [];
+      state.offers.forEach((item) => {
+        if (item.id === action.payload.offerId) {
+          item.isFavorite = action.payload.status;
+        }
+        updateOffers.push(item);
+      });
+      state.offers = updateOffers;
     }
   },
   extraReducers(builder) {
@@ -42,4 +52,4 @@ export const dataProcess = createSlice({
   }
 });
 
-export const { setOffers, setCityName, changeSorting } = dataProcess.actions;
+export const { setOffers, setCityName, changeSorting, setFavoriteStatus } = dataProcess.actions;
