@@ -1,36 +1,47 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
-import { sendFormComment } from '../../store/api-actions';
+
+import { sendCommentForm } from '../../store/api-actions';
+import { CurrentOfferType } from '../../pages/offer-page/offer';
+
+import { CommentType } from '../../types/review-type';
+
 
 const MIN_LENGTH_COMMENT = 50;
 const MAX_LENGTH_COMMENT = 300;
 
 type ReviewForm = {
   idComment: string | undefined;
+  setCurrentOffer: (currentOffer: CurrentOfferType) => void;
+  currentOffer: CurrentOfferType | null;
 }
 
-export default function ReviewForm({ idComment }: ReviewForm) {
-  const dispatch = useAppDispatch();
+export type ReviewDataSentType = {
+  comment: string;
+  rating: number;
+}
+
+export default function ReviewForm({ idComment, setCurrentOffer, currentOffer }: ReviewForm) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  function handleCHangeText(evt: ChangeEvent<HTMLTextAreaElement>) {
-    setComment(evt.target.value);
+  function handleRatingClick(evt: ChangeEvent<HTMLInputElement>) {
+    setRating(+evt.target.value);
   }
 
-  function handleChangeRating(evt: ChangeEvent<HTMLInputElement>) {
-    setRating(+evt.target.value);
+  function handleChangeText(evt: ChangeEvent<HTMLTextAreaElement>) {
+    setComment(evt.target.value);
   }
 
   function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    dispatch(sendFormComment({
-      idComment,
-      comment,
-      rating
-    }));
-    setComment('');
-    setRating(0);
+    if (!currentOffer) {
+      return;
+    }
+    sendCommentForm(idComment as string, { comment, rating }).then((commentPost: CommentType) => {
+      setCurrentOffer({ ...currentOffer, reviews: [commentPost, ...currentOffer.reviews] });
+      setComment('');
+      setRating(0);
+    });
   }
 
   const isValid = comment.length > MIN_LENGTH_COMMENT && comment.length < MAX_LENGTH_COMMENT && rating !== 0;
@@ -49,16 +60,13 @@ export default function ReviewForm({ idComment }: ReviewForm) {
               value={item}
               id={`${item}-stars`}
               type="radio"
-              onChange={handleChangeRating}
+              onChange={handleRatingClick}
             />
             <label
               htmlFor={`${item}-stars`}
               className="reviews__rating-label form__rating-label"
-              title='perfect'
+
             >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
             </label>
           </React.Fragment>
         ))}
@@ -69,7 +77,7 @@ export default function ReviewForm({ idComment }: ReviewForm) {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={comment}
-        onChange={handleCHangeText}
+        onChange={handleChangeText}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

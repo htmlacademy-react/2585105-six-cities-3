@@ -8,8 +8,8 @@ import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import { CommentType } from '../types/review-type';
-import { CommentData } from '../types/comment-data';
 import { createAPI } from '../services/api';
+import { ReviewDataSentType } from '../components/review-form/review-form';
 
 const MAX_OFFER_NEAR = 3;
 
@@ -61,9 +61,15 @@ export const fetchOfferById = async function (offerId: string) {
   return null;
 };
 
-export const sendFormComment = createAsyncThunk<CommentData, CommentData, ApiAction>('data/sendFormComment',
-  async ({ idComment, comment, rating }, { extra: api }) => {
-    const { data } = await api.post<CommentData>(`${APIRoute.Comments}/${idComment}`, { comment, rating });
-    return data;
-  }
-);
+export const sendCommentForm = async function (idComment: string, review: ReviewDataSentType) {
+  const api = createAPI();
+  const { data } = await api.post<CommentType>(`${APIRoute.Comments}/${idComment}`, review);
+
+  return data;
+};
+
+export const postfavoriteStatus = async function (offerId: string, status: boolean) {
+  const api = createAPI();
+  const { data } = await api.post<OfferType>(`${APIRoute.Favorite}/${offerId}/${Number(status)}`);
+  return data;
+};
