@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import { sendCommentForm } from '../../store/api-actions';
 import { CurrentOfferType } from '../../pages/offer-page/offer';
@@ -24,17 +24,20 @@ export default function ReviewForm({ idComment, setCurrentOffer, currentOffer }:
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  const reviewDataSend: ReviewDataSentType = {
-    comment: comment,
-    rating: +rating
-  };
+  function handleRatingClick(evt: ChangeEvent<HTMLInputElement>) {
+    setRating(+evt.target.value);
+  }
+
+  function handleChangeText(evt: ChangeEvent<HTMLTextAreaElement>) {
+    setComment(evt.target.value);
+  }
 
   function handleFormSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     if (!currentOffer) {
       return;
     }
-    sendCommentForm(idComment as string, reviewDataSend).then((commentPost: CommentType) => {
+    sendCommentForm(idComment as string, { comment, rating }).then((commentPost: CommentType) => {
       setCurrentOffer({ ...currentOffer, reviews: [commentPost, ...currentOffer.reviews] });
       setComment('');
       setRating(0);
@@ -57,16 +60,13 @@ export default function ReviewForm({ idComment, setCurrentOffer, currentOffer }:
               value={item}
               id={`${item}-stars`}
               type="radio"
-              onChange={() => setRating(item)}
+              onChange={handleRatingClick}
             />
             <label
               htmlFor={`${item}-stars`}
               className="reviews__rating-label form__rating-label"
-              title='perfect'
+
             >
-              <svg className="form__star-image" width={37} height={33}>
-                <use xlinkHref="#icon-star" />
-              </svg>
             </label>
           </React.Fragment>
         ))}
@@ -77,7 +77,7 @@ export default function ReviewForm({ idComment, setCurrentOffer, currentOffer }:
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={comment}
-        onChange={(evt) => setComment(evt.target.value)}
+        onChange={handleChangeText}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
