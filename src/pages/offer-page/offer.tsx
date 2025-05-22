@@ -143,7 +143,7 @@ function Offer({ defaultCity }: OfferScreenType) {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                {authUser === AuthorizationStatus.Auth ? <ReviewForm idComment={offerId.id} setCurrentOffer={setCurrentOffer} currentOffer={currentOffer} /> : ''}
+                {authUser === AuthorizationStatus.Auth && <ReviewForm idComment={offerId.id} setCurrentOffer={setCurrentOffer} currentOffer={currentOffer} />}
                 <Reviews reviewsProp={currentOffer?.reviews} />
               </section>
 
