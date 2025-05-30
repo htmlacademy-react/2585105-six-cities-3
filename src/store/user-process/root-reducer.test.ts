@@ -8,7 +8,6 @@ describe('Root Reducer', () => {
     const initialState = rootReducer(undefined, { type: '@@INIT' } as Action);
 
 
-
     expect(initialState).toHaveProperty(NameSpace.Data);
     expect(initialState).toHaveProperty(NameSpace.User);
 

@@ -1,26 +1,20 @@
-import { describe, expect, it } from 'vitest';
-import type { Mock } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { fetchOffersAction } from '../api-actions';
 import { APIRoute } from '../../const';
-import { AxiosInstance } from 'axios';
-
-
-type MockedAxiosInstance = AxiosInstance & {
-  get: Mock;
-};
+import type { AxiosInstance } from 'axios';
 
 describe('fetchOffersAction', () => {
-  it('should work with direct mock', async () => {
+  it('should dispatch pending and fulfilled actions', async () => {
 
-    const mockApi: MockedAxiosInstance = {
-      get: vi.fn() as Mock,
-    } as any;
-
-    const mockOffers = [{ id: '1', title: 'Direct Mock Offer' }];
-    mockApi.get.mockResolvedValueOnce({ data: mockOffers });
+    const mockApi = {
+      get: vi.fn(() => Promise.resolve({
+        data: [{ id: '1', title: 'Test Offer' }]
+      }))
+    } as unknown as AxiosInstance;
 
     const dispatch = vi.fn();
     const getState = vi.fn();
+
 
     const thunk = fetchOffersAction();
     await thunk(dispatch, getState, mockApi);
@@ -28,8 +22,8 @@ describe('fetchOffersAction', () => {
 
     expect(mockApi.get).toHaveBeenCalledWith(APIRoute.Offers);
 
-    const actions = dispatch.mock.calls.map((call: any) => call[0].type);
-    expect(actions).toEqual([
+
+    expect(dispatch.mock.calls.map(call => call[0].type)).toEqual([
       fetchOffersAction.pending.type,
       fetchOffersAction.fulfilled.type
     ]);
