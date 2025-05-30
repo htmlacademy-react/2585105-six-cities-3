@@ -20,7 +20,7 @@ function NotFoundPage() {
         <div className="page__login-container container">
           <section className="login">
             <div>
-              <h1 className="login__title">404. Page not found</h1>
+              <h1 className="login__title">404.Page not found</h1>
             </div>
           </section>
         </div>

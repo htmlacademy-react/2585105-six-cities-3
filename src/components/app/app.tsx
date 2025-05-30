@@ -4,7 +4,7 @@ import Login from '../../pages/login-page/login';
 import MainScreen from '../../pages/main-page/main';
 import { Route, Routes } from 'react-router-dom';
 import Offer from '../../pages/offer-page/offer';
-import NotFoundPage from '../../pages/not-found-pages/not-found-pages';
+
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../store/hooks';
@@ -14,6 +14,7 @@ import { browserHistory } from '../../browser-history';
 import { store } from '../../store';
 import { checkAuthAction, fetchOffersAction } from '../../store/api-actions';
 import { OfferType } from '../../types/offer-type';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
