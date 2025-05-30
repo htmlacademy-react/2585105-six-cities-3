@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AuthorizationStatus } from '../../const';
 import { UserData } from '../../types/user-data';
+import { HelmetProvider } from 'react-helmet-async';
 
 const mockStore = configureMockStore();
 
@@ -27,9 +28,11 @@ describe('NotFoundPage', () => {
 
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <NotFoundPage />
-        </MemoryRouter>
+        <HelmetProvider>
+          <MemoryRouter>
+            <NotFoundPage />
+          </MemoryRouter>
+        </HelmetProvider>
       </Provider>
     );
 
@@ -48,9 +51,11 @@ describe('NotFoundPage', () => {
 
     render(
       <Provider store={store}>
-        <MemoryRouter>
-          <NotFoundPage />
-        </MemoryRouter>
+        <HelmetProvider>
+          <MemoryRouter>
+            <NotFoundPage />
+          </MemoryRouter>
+        </HelmetProvider>
       </Provider>
     );
 

@@ -10,7 +10,7 @@ export default function Reviews({ reviewsProp }: ReviewType) {
     return;
   }
 
-  const sortReview = [...reviewsProp].toSorted(sortDayComment);
+  const sortReview = [...reviewsProp].sort(sortDayComment);
 
   return (
     <>
@@ -49,6 +49,5 @@ export default function Reviews({ reviewsProp }: ReviewType) {
           ))}
       </ul>
     </>
-
   );
 }

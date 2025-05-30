@@ -8,6 +8,7 @@ import { AppDispatch } from '../types/state';
 import { Action } from 'redux';
 import thunk from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import { redirectToRoute } from './action';
 
 describe('Async actions', () => {
   const axios = createAPI();
@@ -124,6 +125,7 @@ describe('Async actions', () => {
 
       expect(actions).toEqual([
         loginAction.pending.type,
+        redirectToRoute.type,
         loginAction.fulfilled.type
       ]);
     });
