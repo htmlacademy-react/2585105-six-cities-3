@@ -13,7 +13,7 @@ import { fetchOfferById } from '../../store/api-actions';
 import { AuthorizationStatus } from '../../const';
 import { CommentType } from '../../types/review-type';
 import { AxiosError } from 'axios';
-import NotFoundPage from '../not-found-pages/not-found-pages';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 type OfferScreenType = {
   defaultCity: City;
