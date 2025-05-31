@@ -68,7 +68,7 @@ export const sendCommentForm = async function (idComment: string, review: Review
   return data;
 };
 
-export const postfavoriteStatus = async function (offerId: string, status: boolean) {
+export const postFavoriteStatus = async function (offerId: string, status: boolean) {
   const api = createAPI();
   const { data } = await api.post<OfferType>(`${APIRoute.Favorite}/${offerId}/${Number(status)}`);
   return data;

@@ -10,7 +10,6 @@ type ListCity = {
 export default function ListCities({ checkedCityName }: ListCity) {
 
   const dispatch = useAppDispatch();
-  //const checkedCity = useAppSelector((state) => state.selectedCity);
 
   return (
     <ul className="locations__list tabs__list">
