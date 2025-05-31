@@ -1,19 +1,22 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { City, OfferType } from '../../types/offer-type';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { calculateRating } from '../../utils';
 import ReviewForm from '../../components/review-form/review-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
-import PlaceCard from '../../components/place-card/place-card';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect, useState } from 'react';
-import { fetchOfferById } from '../../store/api-actions';
-import { AuthorizationStatus } from '../../const';
+import { fetchOfferById, postFavoriteStatus } from '../../store/api-actions';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { CommentType } from '../../types/review-type';
 import { AxiosError } from 'axios';
 import NotFoundPage from '../not-found-page/not-found-page';
+import { IsSelectUserAuth } from '../../store/user-process/selectors';
+import { setFavoriteStatus } from '../../store/data-process/data-process';
+import Loader from '../../components/loader/loader';
+import OfferCard from '../../components/offer-card/offer-card';
 
 type OfferScreenType = {
   defaultCity: City;
@@ -25,21 +28,23 @@ export type CurrentOfferType = {
   reviews: CommentType[];
 };
 
-function Offer({ defaultCity }: OfferScreenType) {
+function OfferPage({ defaultCity }: OfferScreenType) {
   const offerId = useParams();
-
-  const offers = useAppSelector((state) => state.DATA.offers);
   const authUser = useAppSelector((state) => state.USER.authorizationStatus);
 
   const [currentOffer, setCurrentOffer] = useState<CurrentOfferType | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
-
+  const isAuthUser = useAppSelector(IsSelectUserAuth);
+  const [status, setStatus] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (offerId.id) {
       fetchOfferById(offerId.id).then((offerCurrent: CurrentOfferType | null) => {
         if (offerCurrent) {
           setCurrentOffer(offerCurrent);
+          setStatus(offerCurrent.offer.isFavorite);
         }
       }).catch((response: AxiosError<{ message: string }>) => {
         if (response.response?.status === 404) {
@@ -47,16 +52,47 @@ function Offer({ defaultCity }: OfferScreenType) {
         }
       });
     }
+
     return () => {
       setCurrentOffer(null);
     };
-  }, [offerId]);
+  }, [offerId.id]);
+
+  if (!offerId.id) {
+    return <Loader />;
+  }
+
+  const handleClickFavorite = () => {
+
+    if (isAuthUser && currentOffer) {
+      postFavoriteStatus(String(offerId.id), !status).then((item: OfferType) => {
+        setStatus(item.isFavorite);
+        dispatch(setFavoriteStatus({ offerId: String(offerId.id), status: item.isFavorite }));
+
+        fetchOfferById(currentOffer.offer.id).then((offerCurrent: CurrentOfferType | null) => {
+          if (offerCurrent) {
+
+            setCurrentOffer(offerCurrent);
+            setStatus(offerCurrent.offer.isFavorite);
+
+          }
+        }).catch((response: AxiosError<{ message: string }>) => {
+          if (response.response?.status === 404) {
+            setIsNotFound(true);
+          }
+        });
+      });
+    } else {
+      navigate(AppRoute.Login);
+    }
+  };
 
   if (isNotFound) {
     return (
       <NotFoundPage />
     );
   }
+
   return (
     <div className="page">
       <Helmet>
@@ -85,9 +121,11 @@ function Offer({ defaultCity }: OfferScreenType) {
                 <h1 className="offer__name">
                   {currentOffer?.offer.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className={`offer__bookmark-icon ${currentOffer?.offer.isFavorite ? 'offer__bookmark-icon--active' : ''}`} width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
+                <button className={`offer__bookmark-button ${status ? 'offer__bookmark-button--active' : ''}
+                 button`} onClick={handleClickFavorite}
+                >
+                  <svg className="offer__bookmark-icon" width="31" height="33">
+                    <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
@@ -149,7 +187,7 @@ function Offer({ defaultCity }: OfferScreenType) {
 
             </div>
           </div>
-          <Map city={currentOffer?.offer.city || defaultCity} offers={offers} blockMap={'offer'} />
+          <Map city={currentOffer?.offer.city || defaultCity} offers={currentOffer?.offer ? [...currentOffer.nearOffers, currentOffer?.offer] : []} blockMap={'offer'} selectedOffer={currentOffer?.offer} />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -158,10 +196,21 @@ function Offer({ defaultCity }: OfferScreenType) {
             </h2>
             <div className="near-places__list places__list">
               {currentOffer?.nearOffers ? currentOffer?.nearOffers.map((offer) => (
-                <PlaceCard
+                <OfferCard
                   key={offer.id}
-                  offer={{ ...offer }}
-                  block='near-places'
+                  offer={offer}
+                  onFavoriteClick={(item: OfferType) => {
+                    if (currentOffer) {
+                      const newOffers = currentOffer.nearOffers.map((element) =>
+                        element.id === item.id ? item : element
+                      );
+
+                      setCurrentOffer({
+                        ...currentOffer,
+                        nearOffers: newOffers
+                      });
+                    }
+                  }}
                 />
               )) : ''}
             </div>
@@ -173,4 +222,4 @@ function Offer({ defaultCity }: OfferScreenType) {
   );
 }
 
-export default Offer;
+export default OfferPage;

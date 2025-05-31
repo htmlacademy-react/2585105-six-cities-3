@@ -10,13 +10,11 @@ import { setFavoriteStatus } from '../../store/data-process/data-process';
 
 type CardPlace = {
   offer: OfferType;
-  onCardHover?: () => void;
-  onOfferMouseLeave?: () => void;
-  block: string;
+  onFavoriteClick: (item:OfferType)=> void;
 }
 
 
-function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) {
+function OfferCard({ offer,onFavoriteClick }: CardPlace) {
 
   const { price, isFavorite, type, previewImage, isPremium, title, rating, id } = offer;
   const pathCard = `/offer/${id}`;
@@ -31,6 +29,7 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
       postFavoriteStatus(offerId, !status).then((item: OfferType) => {
         setStatus(item.isFavorite);
         dispatch(setFavoriteStatus({ offerId, status: item.isFavorite }));
+        onFavoriteClick(item);
       });
     } else {
       navigate(AppRoute.Login);
@@ -38,9 +37,9 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
   };
 
   return (
-    <article className={`${block}__card place-card`} onMouseEnter={onCardHover} onMouseLeave={onOfferMouseLeave}>
+    <article className={'near-places__card place-card'} >
       {isPremium && <div className="place-card__mark"> <span>Premium</span> </div>}
-      <div className={`${block}__image-wrapper place-card__image-wrapper`}>
+      <div className={'near-places__image-wrapper place-card__image-wrapper'}>
         <Link to={pathCard}>
           <img
             className="place-card__image"
@@ -89,4 +88,4 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
 
 }
 
-export default PlaceCard;
+export default OfferCard;

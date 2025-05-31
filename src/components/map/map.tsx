@@ -32,6 +32,9 @@ export default function Map({ city, offers, selectedOffer, blockMap }: CityLocat
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
+      map.setView(
+        [city.location.latitude,city.location.longitude],city.location.zoom
+      );
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -47,7 +50,7 @@ export default function Map({ city, offers, selectedOffer, blockMap }: CityLocat
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, selectedOffer]);
+  }, [city.location.latitude, city.location.longitude, city.location.zoom, map, offers, selectedOffer]);
 
   return (
     <section className={`${blockMap}__map map`} ref={mapRef} />

@@ -1,9 +1,9 @@
 import { AppRoute, AuthorizationStatus } from '../../const';
-import FavoritesPage from '../../pages/favorites-page/favorites';
-import Login from '../../pages/login-page/login';
-import MainScreen from '../../pages/main-page/main';
+import FavoritesPage from '../../pages/favorites-page/favorites-page';
+import Login from '../../pages/login-page/login-page';
+import MainPage from '../../pages/main-page/main-page';
 import { Route, Routes } from 'react-router-dom';
-import Offer from '../../pages/offer-page/offer';
+import OfferPage from '../../pages/offer-page/offer-page';
 
 import PrivateRoute from '../private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
@@ -51,7 +51,7 @@ function App() {
           <Route
             path={AppRoute.Main}
             element={
-              <MainScreen
+              <MainPage
                 defaultCity={defaultCity}
                 offers={filteredOffers}
               />
@@ -74,7 +74,7 @@ function App() {
           />
           <Route
             path={AppRoute.Offer}
-            element={<Offer defaultCity={defaultCity} />}
+            element={<OfferPage defaultCity={defaultCity} />}
           />
           <Route
             path='*'

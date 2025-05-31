@@ -15,7 +15,7 @@ type PlacesProps = {
   offers: OfferType[];
 }
 
-function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
+function MainPage({ defaultCity, offers }: PlacesProps): JSX.Element {
   const dispatch = useAppDispatch();
   const checkedCityName = useAppSelector((state) => state.DATA.selectedCity);
   const city = offers.find((item) => item.city?.name === checkedCityName)?.city;
@@ -76,4 +76,4 @@ function MainScreen({ defaultCity, offers }: PlacesProps): JSX.Element {
   );
 }
 
-export default MainScreen;
+export default MainPage;

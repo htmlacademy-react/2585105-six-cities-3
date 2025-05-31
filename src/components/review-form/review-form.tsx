@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import { sendCommentForm } from '../../store/api-actions';
-import { CurrentOfferType } from '../../pages/offer-page/offer';
+import { CurrentOfferType } from '../../pages/offer-page/offer-page';
 
 import { CommentType } from '../../types/review-type';
 
