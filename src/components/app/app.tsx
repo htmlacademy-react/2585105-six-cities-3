@@ -1,6 +1,6 @@
 import { AppRoute, AuthorizationStatus } from '../../const';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
-import Login from '../../pages/login-page/login-page';
+import LoginPage from '../../pages/login-page/login-page';
 import MainPage from '../../pages/main-page/main-page';
 import { Route, Routes } from 'react-router-dom';
 import OfferPage from '../../pages/offer-page/offer-page';
@@ -70,7 +70,7 @@ function App() {
           />
           <Route
             path={AppRoute.Login}
-            element={<Login />}
+            element={<LoginPage />}
           />
           <Route
             path={AppRoute.Offer}

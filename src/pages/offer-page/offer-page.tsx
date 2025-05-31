@@ -13,7 +13,7 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { CommentType } from '../../types/review-type';
 import { AxiosError } from 'axios';
 import NotFoundPage from '../not-found-page/not-found-page';
-import { IsSelectUserAuth } from '../../store/user-process/selectors';
+import { isSelectUserAuth } from '../../store/user-process/selectors';
 import { setFavoriteStatus } from '../../store/data-process/data-process';
 import Loader from '../../components/loader/loader';
 import OfferCard from '../../components/offer-card/offer-card';
@@ -34,7 +34,7 @@ function OfferPage({ defaultCity }: OfferScreenType) {
 
   const [currentOffer, setCurrentOffer] = useState<CurrentOfferType | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
-  const isAuthUser = useAppSelector(IsSelectUserAuth);
+  const isAuthUser = useAppSelector(isSelectUserAuth);
   const [status, setStatus] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

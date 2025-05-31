@@ -1,18 +1,23 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { OfferType } from '../../types/offer-type';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import FavoriteComponent from '../../components/favorite-offer/favorite-offer';
+import FavoriteOffer from '../../components/favorite-offer/favorite-offer';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { isSelectUserAuth } from '../../store/user-process/selectors';
+import { postFavoriteStatus } from '../../store/api-actions';
+import { setCityName, setFavoriteStatus } from '../../store/data-process/data-process';
+import { AppRoute } from '../../const';
 
 type FavoritesOffers = {
   propsOffers: OfferType[];
 }
 
 function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
-
-  const [{ id }] = propsOffers;
-  const pathCard = `/offer/${id}`;
+  const isAuthUser = useAppSelector(isSelectUserAuth);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const citiesArr = useMemo(() => {
     const favoriteCities = new Set<string>();
@@ -26,6 +31,22 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
       favoriteOffers,
     };
   }, [propsOffers]);
+
+  const handleFavoriteClick = (element: OfferType) => {
+    if (isAuthUser) {
+      postFavoriteStatus(element.id, !element.isFavorite).then((item: OfferType) => {
+        dispatch(setFavoriteStatus({ offerId: element.id, status: item.isFavorite }));
+      });
+    } else {
+      navigate(AppRoute.Login);
+    }
+  };
+
+
+  const handleCityClick = (item:string) => {
+    dispatch(setCityName(item));
+    navigate(AppRoute.Main);
+  };
 
   return (
     <div className="page">
@@ -42,14 +63,14 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
                 <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
-                      <Link className="locations__item-link" to={pathCard}>
+                      <a className="locations__item-link" onClick={() => handleCityClick(city)}>
                         <span>{city}</span>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                   <div className="favorites__places">
                     {citiesArr.favoriteOffers.map((item) => item.city?.name === city ?
-                      <FavoriteComponent favOffer={item} key={item.id} /> : null)}
+                      <FavoriteOffer handleFavoriteClick={handleFavoriteClick} favOffer={item} key={item.id} /> : null)}
                   </div>
                 </li>
               ))}

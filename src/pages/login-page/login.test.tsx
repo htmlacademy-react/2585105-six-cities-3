@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { describe, it, expect, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import Login from './login-page';
+import LoginPage from './login-page';
 import '@testing-library/jest-dom';
 
 vi.mock('../../store/hooks', () => ({
@@ -14,7 +14,7 @@ describe('Component: Login', () => {
     render(
       <MemoryRouter>
         <HelmetProvider>
-          <Login />
+          <LoginPage />
         </HelmetProvider>
       </MemoryRouter>
     );

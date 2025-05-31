@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { OfferType } from '../../types/offer-type';
 import { calculateRating } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { IsSelectUserAuth } from '../../store/user-process/selectors';
+import { isSelectUserAuth } from '../../store/user-process/selectors';
 import { AppRoute } from '../../const';
 import { useState } from 'react';
 import { postFavoriteStatus } from '../../store/api-actions';
@@ -23,7 +23,7 @@ function PlaceCard({ offer, onCardHover, onOfferMouseLeave, block }: CardPlace) 
   const dispatch = useAppDispatch();
   const offerId = offer.id;
   const [status, setStatus] = useState<boolean>(isFavorite);
-  const isAuthUser = useAppSelector(IsSelectUserAuth);
+  const isAuthUser = useAppSelector(isSelectUserAuth);
   const navigate = useNavigate();
 
   const handleClickFavorite = () => {
