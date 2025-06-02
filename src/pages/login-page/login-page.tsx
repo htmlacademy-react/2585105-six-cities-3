@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../store/hooks';
 import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
 
-function Login(): JSX.Element {
+function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
@@ -84,4 +84,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default LoginPage;

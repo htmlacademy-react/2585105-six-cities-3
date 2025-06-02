@@ -4,9 +4,10 @@ import { calculateRating } from '../../utils';
 
 type FavoriteTypeComponent = {
   favOffer: OfferType;
+  handleFavoriteClick: (item:OfferType)=>void;
 }
 
-export default function FavoriteComponent({ favOffer }: FavoriteTypeComponent) {
+export default function FavoriteOffer({ favOffer,handleFavoriteClick }: FavoriteTypeComponent) {
   const { price, type, previewImage, isPremium, title, rating, id } = favOffer;
   const pathCard = `/offer/${id}`;
   return (
@@ -34,6 +35,9 @@ export default function FavoriteComponent({ favOffer }: FavoriteTypeComponent) {
           <button
             className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
+            onClick={()=> {
+              handleFavoriteClick(favOffer);
+            }}
           >
             <svg
               className="place-card__bookmark-icon"
