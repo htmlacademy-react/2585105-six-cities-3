@@ -28,14 +28,14 @@ export default function AuthUser() {
         </Link>
       </li>
       <li className="header__nav-item">
-        <a className="header__nav-link" href="#"
+        <Link to={AppRoute.Login} className="header__nav-link"
           onClick={(evt) => {
             evt.preventDefault();
             logOutHandle();
           }}
         >
           <span className="header__signout">Sign out</span>
-        </a>
+        </Link>
       </li>
     </ul>
   );
