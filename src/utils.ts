@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { RATING_STARS, SortBy } from './const';
+import { CITY_LOCATIONS, RATING_STARS, SortBy } from './const';
 import { CommentType } from './types/review-type';
 import { OfferType } from './types/offer-type';
 
@@ -27,5 +27,8 @@ function sortingByOption(offers: OfferType[], activeSort: string) {
       return offers;
   }
 }
-
-export { calculateRating, formatDateComment, sortDayComment, sortingByOption };
+const getRandomCity = (): string => {
+  const randomIndex = Math.floor(Math.random() * CITY_LOCATIONS.length);
+  return CITY_LOCATIONS[randomIndex];
+};
+export { calculateRating, formatDateComment, sortDayComment, sortingByOption, getRandomCity };

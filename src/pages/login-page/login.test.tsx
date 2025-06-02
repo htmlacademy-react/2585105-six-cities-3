@@ -31,9 +31,6 @@ describe('Component: Login', () => {
 
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument();
 
-
-    expect(screen.getByText('Amsterdam')).toBeInTheDocument();
-
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 });

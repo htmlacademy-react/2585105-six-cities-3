@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import { OfferType } from '../../types/offer-type';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import FavoriteOffer from '../../components/favorite-offer/favorite-offer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -45,7 +45,6 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
 
   const handleCityClick = (item:string) => {
     dispatch(setCityName(item));
-    navigate(AppRoute.Main);
   };
 
   return (
@@ -63,9 +62,9 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
                 <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
-                      <a className="locations__item-link" onClick={() => handleCityClick(city)}>
+                      <Link to={AppRoute.Main} className="locations__item-link" onClick={() => handleCityClick(city)}>
                         <span>{city}</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="favorites__places">
@@ -79,7 +78,7 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link to={AppRoute.Main} className="footer__logo-link">
           <img
             className="footer__logo"
             src="img/logo.svg"
@@ -87,7 +86,7 @@ function FavoritesPage({ propsOffers }: FavoritesOffers): JSX.Element {
             width={64}
             height={33}
           />
-        </a>
+        </Link>
       </footer>
     </div>
   );

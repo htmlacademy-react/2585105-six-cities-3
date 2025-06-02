@@ -4,6 +4,10 @@ import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
+import { AppRoute } from '../../const';
+import { Link } from 'react-router-dom';
+import { setCityName } from '../../store/data-process/data-process';
+import { getRandomCity } from '../../utils';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement>(null);
@@ -24,7 +28,10 @@ function LoginPage(): JSX.Element {
       });
     }
   };
-
+  const randomCity = getRandomCity();
+  const handleCityClick = (item: string) => {
+    dispatch(setCityName(item));
+  };
   return (
     <div className="page page--gray page--login">
       <Helmet>
@@ -73,9 +80,9 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
-              </a>
+              <Link to={AppRoute.Main} className="locations__item-link" onClick={() => handleCityClick(randomCity)}>
+                <span>{randomCity}</span>
+              </Link>
             </div>
           </section>
         </div>
